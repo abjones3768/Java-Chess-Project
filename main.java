@@ -2,33 +2,44 @@ import src.*;
 import java.io.*;
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 public class main
 {
     public static void main()
     {
         Board thing = new Board();
+        SwingUtilities.invokeLater(() -> {
+            try 
+            {
+                File file = new File("src/Chess_Board.png");
+                BufferedImage image = ImageIO.read(file);
 
-SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Auto-Scale Demo");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
-            // 1. By default, JFrame content pane uses BorderLayout
-            JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
-            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            
-            // 2. Add some components
-            panel.add(new JLabel("This window sizes itself automatically!", SwingConstants.CENTER));
-
-            frame.add(panel);
-            
-            // 3. CRITICAL: Automatically scale the frame around the elements
-            frame.pack();
-            
-            // Center the window on the user's screen after packing
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-
-});
+                ImageIcon imageIcon = new ImageIcon(image);
+                JLabel imageLabel = new JLabel(imageIcon);
+                
+                // 3. Set up the JFrame
+                JFrame frame = new JFrame("Image Display");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                
+                // Use a proper layout manager (FlowLayout works well for a simple image)
+                frame.setLayout(new FlowLayout());
+                frame.add(imageLabel);
+                
+                // 4. Automatically size the frame around its components
+                frame.pack();
+                
+                // Center the window on the screen and display it
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            }
+            catch (IOException e) 
+            {
+                System.err.println("Error: Could not load the image file.");
+                e.printStackTrace();
+            }
+        });
     }
 }

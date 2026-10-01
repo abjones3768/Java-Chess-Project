@@ -1,22 +1,23 @@
 package src;
 
 public class Board {
-    private char boardData[][] = new char[8][8];
-                                                // {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
-                                                // {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                                                // {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                                // {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                                // {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                                // {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                                                // {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                                                // {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+    public char[][] boardData = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, //b lack
+                                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                                {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};  //white
+                                                
     public Board()
     {
 
     }
-    public void movePiece() // Array of 2 coordinates, 0 indexed
+    public void movePiece(int source[], int dest[]) // Array of 2 coordinates, 0 indexed
     {
-        //boardData[dest[0]][dest[1]] = boardData[source[0]][source[1]];
+        boardData[dest[0]][dest[1]] = boardData[source[0]][source[1]];
+        boardData[source[0]][source[1]] = ' ';
     }
 }
 

@@ -1,11 +1,14 @@
 package src;
 
-import src.*;
+//import src.*;
 import java.util.Scanner;
 
 public class Board {
+    // -- Boilerplate -- //
     Scanner input = new Scanner(System.in);
-    public char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
+
+    // -- Data -- //
+    private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
                                 {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
@@ -17,7 +20,7 @@ public class Board {
     // Arrays must be accessed as [y][x], but getMove() deals with 0 index and location adjustment
     // As a result, pieces can be referenced from the frontend using digits the same way as chess notation
 
-    public char[][] boardColors = {{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
+    private char[][] boardColors = {{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
                                 {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
@@ -29,19 +32,26 @@ public class Board {
     // Moved when other pieces are moved
     // Used to validate which pieces can be chosen in what scenario
 
-    public Board()
-    {
-
-    }
-    public void movePiece(Coordinates source, Coordinates dest) // Array of 2 coordinates, 0 indexed
+    // -- Board Methods -- //
+    public void movePiece(Coordinates source, Coordinates dest) // Array of 2 coordinates
     {
         boardPieces[dest.y][dest.x] = boardPieces[source.y][source.x]; // Copy piece
         boardColors[dest.y][dest.x] = boardColors[source.y][source.x]; // Copy color
         boardPieces[source.y][source.x] = '.'; // Delete piece
         boardColors[source.y][source.x] = '.'; // Delete color
     }
+    public char getColor(Coordinates coord)
+    {
+        return boardColors[coord.y][coord.x];
+    }
 
-    public Coordinates getMove() // Get move input and convert into usable format
+    // -- Testing Environment -- //
+    public static final String _RESET = "\u001B[0m";
+    public static final String _WHITE = "\033[38;5;255m";
+    public static final String _BLACK = "\033[90m";
+    public static final String _BROWN = "\033[0;33m";
+
+    public Coordinates _getMove() // Get move input and convert into usable format
     {
         Coordinates move = new Coordinates();
         boolean invalid = true;
@@ -69,6 +79,29 @@ public class Board {
             invalid = false;
         }
         return move;
+    }
+    public void _printBoard()
+    {
+        // Clears screen somehow idk
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (boardColors[i][j] == 'W')
+                {
+                    System.out.print(_WHITE + boardPieces[i][j] + " " + _RESET);
+                }
+                else if (boardColors[i][j] == 'B')
+                {
+                    System.out.print(_BLACK + boardPieces[i][j] + " " + _RESET);
+                }
+                else System.out.print(_BROWN + boardPieces[i][j] + " " + _RESET);
+            }
+            System.out.println();
+        }
     }
 }
 

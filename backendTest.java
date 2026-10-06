@@ -2,7 +2,7 @@ import src.*;
 import java.util.Scanner;
 
 /*
-TODO:
+Todo:
 move restrictions for different pieces, will be implemented in their classes
 find some way to associate the chars in the boardPiece array with those objects
 move restrictions should just be a function that takes in the piece location and the destination
@@ -10,20 +10,16 @@ move restrictions should just be a function that takes in the piece location and
 */
 
 public class backendTest {
-    Board board = new Board();
-    boolean turn; // False is white turn, true is black turn
     Scanner input = new Scanner(System.in);
+    Board board = new Board();
 
-    public static final String RESET = "\u001B[0m";
-    public static final String WHITE = "\033[38;5;255m";
-    public static final String BLACK = "\033[90m";
-    public static final String BROWN = "\033[0;33m";
+    boolean turn; // False is white turn, true is black turn
 
     public void main()
     {
         while(true) // Game loop
         {
-            printBoard();
+            board._printBoard();
             if(!turn) // White turn
             {
                 System.out.println("White to move\n");
@@ -32,12 +28,12 @@ public class backendTest {
                 while (!finished)
                 {
                     System.out.println("Select a piece:");
-                    Coordinates source = board.getMove();
-                    if (board.boardColors[source.y][source.x] != 'W') continue; // Validate piece was white
+                    Coordinates source = board._getMove();
+                    if (board.getColor(source) != 'W') continue; // Validate piece was white
 
                     System.out.println("\nSelect a destination:");
-                    Coordinates dest = board.getMove();
-                    if (board.boardColors[dest.y][dest.x] == 'W') continue; // Validate piece was not white
+                    Coordinates dest = board._getMove();
+                    if (board.getColor(dest) == 'W') continue; // Validate piece was not white
 
                     board.movePiece(source, dest);
                     finished = true;
@@ -51,40 +47,17 @@ public class backendTest {
                 while (!finished)
                 {
                     System.out.println("Select a piece:");
-                    Coordinates source = board.getMove();
-                    if (board.boardColors[source.y][source.x] != 'B') continue; // Validate piece was white
+                    Coordinates source = board._getMove();
+                    if (board.getColor(source) != 'B') continue; // Validate piece was white
 
                     System.out.println("\nSelect a destination:");
-                    Coordinates dest = board.getMove();
-                    if (board.boardColors[dest.y][dest.x] == 'B') continue; // Validate piece was not white
+                    Coordinates dest = board._getMove();
+                    if (board.getColor(dest) == 'B') continue; // Validate piece was not white
 
                     board.movePiece(source, dest);
                     finished = true;
                 }
             }
-        }
-    }
-    public void printBoard()
-    {
-        // Clears screen somehow idk
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                if (board.boardColors[i][j] == 'W')
-                {
-                    System.out.print(WHITE + board.boardPieces[i][j] + " " + RESET);
-                }
-                else if (board.boardColors[i][j] == 'B')
-                {
-                    System.out.print(BLACK + board.boardPieces[i][j] + " " + RESET);
-                }
-                else System.out.print(BROWN + board.boardPieces[i][j] + " " + RESET);
-            }
-            System.out.println();
         }
     }
 }

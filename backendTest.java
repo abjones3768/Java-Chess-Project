@@ -1,6 +1,14 @@
 import src.*;
 import java.util.Scanner;
 
+/*
+TODO:
+move restrictions for different pieces, will be implemented in their classes
+find some way to associate the chars in the boardPiece array with those objects
+move restrictions should just be a function that takes in the piece location and the destination
+    and returns true or false if the move is valid or not
+*/
+
 public class backendTest {
     Board board = new Board();
     boolean turn; // False is white turn, true is black turn

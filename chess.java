@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-public class main
+public class chess
 {
 
     //Board board = new Board();

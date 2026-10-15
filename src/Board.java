@@ -1,67 +1,75 @@
 package src;
-
-//import src.*;
 import java.util.Scanner;
 
 public class Board {
-    // -- Boilerplate -- //
+    // Boilerplate
     Scanner input = new Scanner(System.in);
 
+    // Piece data
     public Pawn pawnData = new Pawn();
     public Knight knightData = new Knight();
+    public Rook rookData = new Rook();
+    public Bishop bishopData = new Bishop();
+    public Queen queenData = new Queen();
 
-    // -- Data -- //
+    // Game state data (public visibility for convenience)
+    public char turnChar = 'B';
+    public boolean whiteKingMoved = false;
+    public boolean blackKingMoved = false;
+
+    // Board data
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
-                                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                                {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+                                    {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                                    {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
     // Arrays are column major order, 0 indexed, and the origin is in the top left
     // Arrays must be accessed as [y][x], but getMove() deals with 0 index and location adjustment
     // As a result, pieces can be referenced from the frontend using digits the same way as chess notation
 
     private char[][] boardColors = {{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
-                                {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'.', '.', '.', '.', '.', '.', '.', '.'},
-                                {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
-                                {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'}};
+                                    {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'.', '.', '.', '.', '.', '.', '.', '.'},
+                                    {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},
+                                    {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'}};
     // Array defining piece colors
     // Moved when other pieces are moved
     // Used to validate which pieces can be chosen in what scenario
 
-    // -- Board Methods -- //
-    public void movePiece(Coordinates source, Coordinates dest) // Array of 2 coordinates
+    // Board Methods
+    public void movePiece(Coordinates source, Coordinates dest)
     {
         boardPieces[dest.y][dest.x] = boardPieces[source.y][source.x]; // Copy piece
         boardColors[dest.y][dest.x] = boardColors[source.y][source.x]; // Copy color
         boardPieces[source.y][source.x] = '.'; // Delete piece
         boardColors[source.y][source.x] = '.'; // Delete color
     }
-    public char getColor(Coordinates coord)
+    public char getColor(Coordinates coord) // Returns corresponding color
     {
         return boardColors[coord.y][coord.x];
     }
-    public char getPiece(Coordinates coord)
+    public char getPiece(Coordinates coord) // Returns corresponding piece
     {
         return boardPieces[coord.y][coord.x];
     }
-    public boolean inBounds(Coordinates coord)
+    public boolean inBounds(Coordinates coord) // Bounds checking
     {
         if (coord.x > -1 && coord.x < 8 && coord.y > -1 && coord.y < 8) return true;
         else return false;
     }
 
-    // -- Testing Environment -- //
-    public static final String _RESET = "\u001B[0m";
-    public static final String _WHITE = "\033[38;5;255m";
-    public static final String _BLACK = "\033[90m";
-    public static final String _BROWN = "\033[0;33m";
+    // The remaining data and methods are for text based input and output, intended
+    // for the testing environment. Should not be used in proper front end implementation
+    public final String _RESET = "\u001B[0m";
+    public final String _WHITE = "\033[38;5;255m";
+    public final String _BLACK = "\033[90m";
+    public final String _BROWN = "\033[0;33m";
 
     public Coordinates _getMove() // Get move input and convert into usable format
     {

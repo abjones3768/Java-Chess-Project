@@ -19,25 +19,25 @@ public class Pawn extends Piece
         if (boardState.getColor(loc) == 'W') // White pawn check
         {
             Coordinates locCheck = new Coordinates(loc.x, loc.y - 1);
-            if (boardState.getPiece(locCheck) == '.') // Check directly ahead
+            if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.') // Check directly ahead
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
             locCheck.y -= 1;
-            if (loc.y == 6 && boardState.getPiece(locCheck) == '.') // Check 2 spaces ahead if pawn is at starting position
+            if (boardState.inBounds(locCheck) && loc.y == 6 && boardState.getPiece(locCheck) == '.') // Check 2 spaces ahead if pawn is at starting position
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
             locCheck.x = loc.x - 1;
             locCheck.y = loc.y - 1;
-            if (boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is black
+            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is black
             {
                 coords.add(locCheck);
             }
             locCheck.x += 2;
-            if (boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is black
+            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is black
             {
                 coords.add(locCheck);
             }
@@ -45,25 +45,25 @@ public class Pawn extends Piece
         else // Black pawn check
         {
             Coordinates locCheck = new Coordinates(loc.x, loc.y + 1);
-            if (boardState.getPiece(locCheck) == '.') // Check directly ahead
+            if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.') // Check directly ahead
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
             locCheck.y += 1;
-            if (loc.y == 1 && boardState.getPiece(locCheck) == '.') // Check 2 spaces ahead if pawn is at starting position
+            if (boardState.inBounds(locCheck) && loc.y == 1 && boardState.getPiece(locCheck) == '.') // Check 2 spaces ahead if pawn is at starting position
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
             locCheck.x = loc.x + 1;
             locCheck.y = loc.y + 1;
-            if (boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is white
+            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is white
             {
                 coords.add(locCheck);
             }
             locCheck.x -= 2;
-            if (boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is white
+            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is white
             {
                 coords.add(locCheck);
             }

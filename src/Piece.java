@@ -5,15 +5,19 @@ import java.util.ArrayList;
 /*
 To implement a piece:
 1. In the constructor, assign appropriate pieceChar
-2. Implement getValidMoves, which returns an ArrayList of all valid move locations
+2. getChar() simply returns pieceChar
+3. validMove returns true if dest is in check. Normal ArrayList methods are inadequate
+    because they compare the location instead of values
+4. getValidMoves is implemented on a per piece basis. This is the algorithm that 
+    dictates move logic
 */
 public abstract class Piece {
-    // public abstract void Piece(); // Assign character
     protected char pieceChar; // Character data
     public char getChar() // Read character
     {
         return pieceChar;
     }
+
     public boolean validMove(ArrayList<Coordinates> check, Coordinates dest)
     {
         if (check.isEmpty()) // Check for presence of valid moves
@@ -30,5 +34,6 @@ public abstract class Piece {
         }
         return false;
     }
+    
     public abstract ArrayList<Coordinates> getValidMoves(final Coordinates loc, final Board boardState); // Algorithm for determining valid moves
 }

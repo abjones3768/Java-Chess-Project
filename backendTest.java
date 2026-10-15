@@ -4,17 +4,12 @@ import java.util.ArrayList;
 
 /*
 Todo:
-bishop movement
-rook movement
-queen movement (literally just the above two in one thing)
 king movement (hard)
 */
 
 public class backendTest {
     Scanner input = new Scanner(System.in);
     Board board = new Board();
-
-    char turnChar = 'B';
 
     public void main()
     {
@@ -23,14 +18,14 @@ public class backendTest {
             board._printBoard(); // Display board
 
             // Swap move (by default, turnChar is 'B', which swaps it to 'W' on first turn.)
-            if (turnChar == 'B') 
+            if (board.turnChar == 'B') 
             {
-                turnChar = 'W';
+                board.turnChar = 'W';
                 System.out.println("White to move\n");
             }
             else 
             {
-                turnChar = 'B';
+                board.turnChar = 'B';
                 System.out.println("Black to move\n");
             }
 
@@ -39,11 +34,11 @@ public class backendTest {
             {
                 System.out.println("Select a piece:");
                 Coordinates source = board._getMove(); // Gets move
-                if (board.getColor(source) != turnChar) continue; // Validate piece was correct color
+                if (board.getColor(source) != board.turnChar) continue; // Validate piece was correct color
 
                 System.out.println("\nSelect a destination:");
                 Coordinates dest = board._getMove();
-                if (board.getColor(dest) == turnChar) continue; // Validate piece was not current turn color
+                if (board.getColor(dest) == board.turnChar) continue; // Validate piece was not current turn color
 
                 ArrayList<Coordinates> check = new ArrayList<>(); // List of coordinates
 
@@ -66,6 +61,30 @@ public class backendTest {
                     case 'N':
                         check = board.knightData.getValidMoves(source, board);
                         if (!board.knightData.validMove(check, dest))
+                        {
+                            System.out.println("Invalid move.");
+                            continue;
+                        }
+                        else break;
+                    case 'R':
+                        check = board.rookData.getValidMoves(source, board);
+                        if (!board.rookData.validMove(check, dest))
+                        {
+                            System.out.println("Invalid move.");
+                            continue;
+                        }
+                        else break;
+                    case 'B':
+                        check = board.bishopData.getValidMoves(source, board);
+                        if (!board.bishopData.validMove(check, dest))
+                        {
+                            System.out.println("Invalid move.");
+                            continue;
+                        }
+                        else break;
+                    case 'Q':
+                        check = board.queenData.getValidMoves(source, board);
+                        if (!board.queenData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
                             continue;

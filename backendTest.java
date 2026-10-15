@@ -38,7 +38,7 @@ public class backendTest {
 
                     ArrayList<Coordinates> check = new ArrayList<>();
                     boolean invalid = true;
-                    
+
                     switch (board.getPiece(source)) // Validate move destination
                     {
                         case 'P':

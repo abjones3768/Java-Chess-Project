@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 /*
 Todo:
-move restrictions for different pieces, will be implemented in their classes
-find some way to associate the chars in the boardPiece array with those objects
-move restrictions should just be a function that takes in the piece location and the destination
-    and returns true or false if the move is valid or not
+bishop movement
+rook movement
+queen movement (literally just the above two in one thing)
+king movement (hard)
 */
 
 public class backendTest {
@@ -88,8 +88,7 @@ public class backendTest {
                             }
                             break;
                         default:
-                            // im pretty sure and hope its literally impossible to get here
-                            // once all pieces are implemented at least
+                            // this only happens when you try to move a piece with no movement data
                             System.exit(64);
                     }
                     board.movePiece(source, dest);

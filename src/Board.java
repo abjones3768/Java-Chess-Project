@@ -7,7 +7,8 @@ public class Board {
     // -- Boilerplate -- //
     Scanner input = new Scanner(System.in);
 
-    Pawn pawnData = new Pawn();
+    public Pawn pawnData = new Pawn();
+    public Knight knightData = new Knight();
 
     // -- Data -- //
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
@@ -49,6 +50,11 @@ public class Board {
     public char getPiece(Coordinates coord)
     {
         return boardPieces[coord.y][coord.x];
+    }
+    public boolean inBounds(Coordinates coord)
+    {
+        if (coord.x > -1 && coord.x < 8 && coord.y > -1 && coord.y < 8) return true;
+        else return false;
     }
 
     // -- Testing Environment -- //

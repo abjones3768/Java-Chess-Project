@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /*
 Todo:
 king movement (hard)
+make some build system thing so half of the repo isnt class files
 */
 
 public class backendTest {

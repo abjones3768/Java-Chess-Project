@@ -7,6 +7,8 @@ public class Board {
     // -- Boilerplate -- //
     Scanner input = new Scanner(System.in);
 
+    Pawn pawnData = new Pawn();
+
     // -- Data -- //
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
                                 {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
@@ -43,6 +45,10 @@ public class Board {
     public char getColor(Coordinates coord)
     {
         return boardColors[coord.y][coord.x];
+    }
+    public char getPiece(Coordinates coord)
+    {
+        return boardPieces[coord.y][coord.x];
     }
 
     // -- Testing Environment -- //

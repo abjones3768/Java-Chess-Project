@@ -34,7 +34,7 @@ public class backendTest {
                     System.out.println("\nSelect a destination:");
                     Coordinates dest = board._getMove();
                     if (board.getColor(dest) == 'W') continue; // Validate piece was not white
-
+                    
                     board.movePiece(source, dest);
                     finished = true;
                 }

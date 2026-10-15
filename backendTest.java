@@ -37,56 +37,25 @@ public class backendTest {
                     if (board.getColor(dest) == 'W') continue; // Validate piece was not white
 
                     ArrayList<Coordinates> check = new ArrayList<>();
-                    boolean invalid = true;
 
                     switch (board.getPiece(source)) // Validate move destination
                     {
                         case 'P':
                             check = board.pawnData.getValidMoves(source, board);
-                            if (check.isEmpty()) // Check for presence of valid moves
+                            if (!board.pawnData.validMove(check, dest))
                             {
                                 System.out.println("Invalid move.");
                                 continue;
                             }
-
-                            invalid = true;
-                            for (int i = 0; i < check.size(); i++) // Check all moves in list, if a match is found, allow move to go through.
-                            {
-                                if (check.get(i).x == dest.x && check.get(i).y == dest.y)
-                                {
-                                    invalid = false;
-                                    break;
-                                }
-                            }
-                            if (invalid)
-                            {
-                                System.out.println("Invalid move.");
-                                continue;
-                            }
-                            break;
+                            else break;
                         case 'N':
                             check = board.knightData.getValidMoves(source, board);
-                            if (check.isEmpty()) // Check for presence of valid moves
+                            if (!board.knightData.validMove(check, dest))
                             {
                                 System.out.println("Invalid move.");
                                 continue;
                             }
-
-                            invalid = true;
-                            for (int i = 0; i < check.size(); i++) // Check all moves in list, if a match is found, allow move to go through.
-                            {
-                                if (check.get(i).x == dest.x && check.get(i).y == dest.y)
-                                {
-                                    invalid = false;
-                                    break;
-                                }
-                            }
-                            if (invalid)
-                            {
-                                System.out.println("Invalid move.");
-                                continue;
-                            }
-                            break;
+                            else break;
                         default:
                             // this only happens when you try to move a piece with no movement data
                             System.exit(64);

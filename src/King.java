@@ -185,7 +185,6 @@ public class King extends Piece
             }
         }
         recurse = true;
-        // Make sure to have a special case for doing this with check.
         
         return coords;
     }

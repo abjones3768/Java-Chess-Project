@@ -22,6 +22,7 @@ public class Board {
     public boolean rightWhiteRookMoved = false;
     public boolean leftBlackRookMoved = false;
     public boolean rightBlackRookMoved = false;
+    public boolean[] enPassant = new boolean[8];
 
     // Board data
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
@@ -51,6 +52,11 @@ public class Board {
     // Board Methods
     public void movePiece(Coordinates source, Coordinates dest)
     {
+        resetPassant();
+        if (getPiece(source) == 'P' && (dest.y > source.y + 1 || dest.y < source.y - 1)) // En passant check
+        {
+            enPassant[source.x] = true;
+        }
         if (getPiece(source) == 'R') // Rook movement check
         {
             if (getColor(source) == 'W')
@@ -64,7 +70,7 @@ public class Board {
                 if (source.x == 7) rightBlackRookMoved = true;
             }
         }
-        if (getPiece(source) == 'K') // King movement check, need to also do rook moves here later
+        if (getPiece(source) == 'K') // King movement check
         {
             if (getColor(source) == 'W') 
             {
@@ -91,6 +97,22 @@ public class Board {
                 }
             }
         }
+        if (getPiece(source) == 'K' && (source.x + 1 < dest.x || source.x - 1 > dest.x)) // Castling check
+            {
+                Coordinates newSource = new Coordinates(source.x, source.y);
+                Coordinates newDest = new Coordinates(dest.x, dest.y);
+                if (newDest.x == 6)
+                {
+                    newDest.x = 5;
+                    newSource.x = 7;
+                }
+                if (newDest.x == 2)
+                {
+                    newDest.x = 3;
+                    newSource.x = 0;
+                }
+                movePiece(newSource, newDest); // Move rook
+            }
         boardPieces[dest.y][dest.x] = boardPieces[source.y][source.x]; // Copy piece
         boardColors[dest.y][dest.x] = boardColors[source.y][source.x]; // Copy color
         boardPieces[source.y][source.x] = '.'; // Delete piece
@@ -108,6 +130,15 @@ public class Board {
     {
         if (coord.x > -1 && coord.x < 8 && coord.y > -1 && coord.y < 8) return true;
         else return false;
+    }
+
+    private void resetPassant()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            enPassant[i] = false;
+        }
+        return;
     }
 
     // The remaining data and methods are for text based input and output, intended

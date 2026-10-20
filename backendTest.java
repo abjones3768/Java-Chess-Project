@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /*
 Todo:
-king movement (hard)
+en passant
+check
 make some build system thing so half of the repo isnt class files
 */
 
@@ -130,21 +131,6 @@ public class backendTest {
                         System.exit(64);
                 }
                 board.movePiece(source, dest); // Unconditionally moves piece, as it has been validated by this point
-
-                if (board.getPiece(dest) == 'K' && (source.x + 1 < dest.x || source.x - 1 > dest.x)) // Castling check
-                {
-                    if (dest.x == 6)
-                    {
-                        dest.x = 5;
-                        source.x = 7;
-                    }
-                    if (dest.x == 2)
-                    {
-                        dest.x = 3;
-                        source.x = 0;
-                    }
-                    board.movePiece(source, dest); // Move rook
-                }
                 finished = true;
             } // End while
         } // End game loop

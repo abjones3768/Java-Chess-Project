@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class King extends Piece
 {
-    private boolean recurse = true;
+    public boolean recurse = true;
     void Piece()
     {
         pieceChar = 'K';

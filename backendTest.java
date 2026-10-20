@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /*
 Todo:
 en passant
-check
+enforce check
 make some build system thing so half of the repo isnt class files
 */
 
@@ -31,7 +31,10 @@ public class backendTest {
                 board.turnChar = 'B';
                 System.out.println("Black to move\n");
             }
-
+            if (board.isCheck())
+            {
+                System.out.println("Check!");
+            }
             boolean finished = false; // Loop flag
             while (!finished)
             {

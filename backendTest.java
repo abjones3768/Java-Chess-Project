@@ -11,12 +11,13 @@ make some build system thing so half of the repo isnt class files
 public class backendTest {
     Scanner input = new Scanner(System.in);
     Board board = new Board();
+    final ArrayList<Coordinates> blank = new ArrayList<>();
 
     public void main()
     {
         while(true) // Game loop
         {
-            board._printBoard(); // Display board
+            board._printBoard(blank); // Display board
 
             // Swap move (by default, turnChar is 'B', which swaps it to 'W' on first turn.)
             if (board.turnChar == 'B') 
@@ -37,11 +38,32 @@ public class backendTest {
                 Coordinates source = board._getMove(); // Gets move
                 if (board.getColor(source) != board.turnChar) continue; // Validate piece was correct color
 
+                ArrayList<Coordinates> check = new ArrayList<>(); // List of coordinates
+                switch (board.getPiece(source)) // Get valid moves to augment terminal output
+                {
+                    case 'P':
+                        check = board.pawnData.getValidMoves(source, board);
+                        break;
+                    case 'N':
+                        check = board.knightData.getValidMoves(source, board);
+                        break;
+                    case 'R':
+                        check = board.rookData.getValidMoves(source, board);
+                        break;
+                    case 'B':
+                        check = board.bishopData.getValidMoves(source, board);
+                        break;
+                    case 'Q':
+                        check = board.queenData.getValidMoves(source, board);
+                        break;
+                    default:
+                        System.exit(64);
+                }
+                board._printBoard(check);
+
                 System.out.println("\nSelect a destination:");
                 Coordinates dest = board._getMove();
                 if (board.getColor(dest) == board.turnChar) continue; // Validate piece was not current turn color
-
-                ArrayList<Coordinates> check = new ArrayList<>(); // List of coordinates
 
                 switch (board.getPiece(source)) // Validate move destination
                 {

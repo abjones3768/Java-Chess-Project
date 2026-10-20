@@ -1,5 +1,6 @@
 package src;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Board {
     // Boilerplate
@@ -70,6 +71,7 @@ public class Board {
     public final String _WHITE = "\033[38;5;255m";
     public final String _BLACK = "\033[90m";
     public final String _BROWN = "\033[0;33m";
+    public final String _GREENBG = "\033[42m";
 
     public Coordinates _getMove() // Get move input and convert into usable format
     {
@@ -100,7 +102,7 @@ public class Board {
         }
         return move;
     }
-    public void _printBoard()
+    public void _printBoard(ArrayList<Coordinates> highlight)
     {
         // Clears screen somehow idk
         System.out.print("\033[H\033[2J");
@@ -110,15 +112,51 @@ public class Board {
         {
             for (int j = 0; j < 8; j++)
             {
+                boolean colorMove = false;
+                if (!highlight.isEmpty())
+                {
+                    Coordinates current = new Coordinates(j, i);
+                    for (int k = 0; k < highlight.size(); k ++) // evil time complexity
+                    {
+                        if (current.x == highlight.get(k).x && current.y == highlight.get(k).y)
+                        {
+                            colorMove = true;
+                        }
+                    }
+                }
                 if (boardColors[i][j] == 'W')
                 {
-                    System.out.print(_WHITE + boardPieces[i][j] + " " + _RESET);
+                    if (colorMove)
+                    {
+                        System.out.print(_WHITE + _GREENBG + boardPieces[i][j] + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_WHITE + boardPieces[i][j] + " " + _RESET);
+                    }
                 }
                 else if (boardColors[i][j] == 'B')
                 {
-                    System.out.print(_BLACK + boardPieces[i][j] + " " + _RESET);
+                    if (colorMove)
+                    {
+                        System.out.print(_BLACK + _GREENBG + boardPieces[i][j] + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_BLACK + boardPieces[i][j] + " " + _RESET);
+                    }
                 }
-                else System.out.print(_BROWN + boardPieces[i][j] + " " + _RESET);
+                else 
+                {
+                    if (colorMove)
+                    {
+                        System.out.print(_BROWN + _GREENBG + boardPieces[i][j] + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_BROWN + boardPieces[i][j] + " " + _RESET);
+                    }
+                }
             }
             System.out.println();
         }

@@ -15,64 +15,59 @@ public class Knight extends Piece
         */
         ArrayList<Coordinates> coords = new ArrayList<>();
         char color = boardState.getColor(loc); // Get color directly, validation can easily be done based on this
-        if (boardState.getColor(loc) == color) 
+        Coordinates locCheck = new Coordinates(loc.x, loc.y);
+
+        locCheck.x -= 1;
+        locCheck.y -= 2;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 2, left 1
         {
-            Coordinates locCheck = new Coordinates(loc.x - 1, loc.y - 2);
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 2, left 1
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.x += 2;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 2, right 1
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.y += 4;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 2, right 1
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.x -= 2;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 2, left 1
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.y += 1;
-            locCheck.x -= 1;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 1, left 2
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.x += 4;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 1, right 2
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.y += 2;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 1, right 2
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
-
-            locCheck.x -= 4;
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 1, left 2
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-            }
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.x += 2;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Up 2, right 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.x += 1;
+        locCheck.y += 1;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Right 2, up 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.y += 2;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Right 2, down 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.x -= 1;
+        locCheck.y += 1;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 2, right 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.x -= 2;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Down 2, left 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.x -= 1;
+        locCheck.y -= 1;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // Left 2, down 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
+        }
+        locCheck.y -= 2;
+        if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) != color) // left 2, up 1
+        {
+            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+            coords.add(locAdd);
         }
         return coords;
     }

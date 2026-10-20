@@ -12,11 +12,16 @@ public class Board {
     public Rook rookData = new Rook();
     public Bishop bishopData = new Bishop();
     public Queen queenData = new Queen();
+    public King kingData = new King();
 
     // Game state data (public visibility for convenience)
     public char turnChar = 'B';
     public boolean whiteKingMoved = false;
     public boolean blackKingMoved = false;
+    public boolean leftWhiteRookMoved = false;
+    public boolean rightWhiteRookMoved = false;
+    public boolean leftBlackRookMoved = false;
+    public boolean rightBlackRookMoved = false;
 
     // Board data
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
@@ -46,6 +51,46 @@ public class Board {
     // Board Methods
     public void movePiece(Coordinates source, Coordinates dest)
     {
+        if (getPiece(source) == 'R') // Rook movement check
+        {
+            if (getColor(source) == 'W')
+            {
+                if (source.x == 0) leftWhiteRookMoved = true;
+                if (source.x == 7) rightWhiteRookMoved = true;
+            }
+            else
+            {
+                if (source.x == 0) leftBlackRookMoved = true;
+                if (source.x == 7) rightBlackRookMoved = true;
+            }
+        }
+        if (getPiece(source) == 'K') // King movement check, need to also do rook moves here later
+        {
+            if (getColor(source) == 'W') 
+            {
+                whiteKingMoved = true;
+                if (dest.x > source.x + 1)
+                {
+                    rightWhiteRookMoved = true;
+                }
+                if (dest.x < source.x - 1)
+                {
+                    leftWhiteRookMoved = true;
+                }
+            }
+            else 
+            {
+                blackKingMoved = true;
+                if (dest.x > source.x + 1)
+                {
+                    rightBlackRookMoved = true;
+                }
+                if (dest.x < source.x - 1)
+                {
+                    leftBlackRookMoved = true;
+                }
+            }
+        }
         boardPieces[dest.y][dest.x] = boardPieces[source.y][source.x]; // Copy piece
         boardColors[dest.y][dest.x] = boardColors[source.y][source.x]; // Copy color
         boardPieces[source.y][source.x] = '.'; // Delete piece

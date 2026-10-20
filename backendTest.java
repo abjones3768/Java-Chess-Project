@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 /*
 Todo:
+fix pawn movement in king check stuff
 king movement (hard)
+add rook movement to castling
 make some build system thing so half of the repo isnt class files
 */
 
@@ -55,6 +57,9 @@ public class backendTest {
                         break;
                     case 'Q':
                         check = board.queenData.getValidMoves(source, board);
+                        break;
+                    case 'K':
+                        check = board.kingData.getValidMoves(source, board);
                         break;
                     default:
                         System.exit(64);
@@ -108,6 +113,14 @@ public class backendTest {
                     case 'Q':
                         check = board.queenData.getValidMoves(source, board);
                         if (!board.queenData.validMove(check, dest))
+                        {
+                            System.out.println("Invalid move.");
+                            continue;
+                        }
+                        else break;
+                    case 'K':
+                        check = board.kingData.getValidMoves(source, board);
+                        if (!board.kingData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
                             continue;

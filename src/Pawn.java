@@ -34,12 +34,14 @@ public class Pawn extends Piece
             locCheck.y = loc.y - 1;
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is black
             {
-                coords.add(locCheck);
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
             }
             locCheck.x += 2;
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is black
             {
-                coords.add(locCheck);
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
             }
         }
         else // Black pawn check
@@ -60,12 +62,14 @@ public class Pawn extends Piece
             locCheck.y = loc.y + 1;
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the right is white
             {
-                coords.add(locCheck);
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
             }
             locCheck.x -= 2;
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is white
             {
-                coords.add(locCheck);
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
             }
         }
         return coords;

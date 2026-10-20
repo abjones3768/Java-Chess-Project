@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 /*
 Todo:
-fix pawn movement in king check stuff
 king movement (hard)
 add rook movement to castling
 make some build system thing so half of the repo isnt class files

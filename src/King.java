@@ -147,7 +147,7 @@ public class King extends Piece
                     switch (boardState.getPiece(locCheck))
                     {
                         case 'P':
-                            check = boardState.pawnData.getValidMoves(locCheck, boardState);
+                            check = boardState.pawnData.getAttackingMoves(locCheck, boardState);
                             break;
                         case 'N':
                             check = boardState.knightData.getValidMoves(locCheck, boardState);
@@ -178,7 +178,6 @@ public class King extends Piece
                     {
                         if (check.get(k).x == coords.get(l).x && check.get(k).y == coords.get(l).y)
                         {
-                            // pawn check is doing the inverse of what it should
                             coords.remove(l);
                         }
                     }

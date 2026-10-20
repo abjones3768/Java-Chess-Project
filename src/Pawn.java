@@ -7,6 +7,25 @@ public class Pawn extends Piece
     {
         pieceChar = 'P';
     }
+    public ArrayList<Coordinates> getAttackingMoves(final Coordinates loc, final Board boardState)
+    {
+        ArrayList<Coordinates> coords = new ArrayList<>();
+        if (boardState.getColor(loc) == 'W')
+        {
+            Coordinates coord1 = new Coordinates(loc.x - 1, loc.y - 1);
+            Coordinates coord2 = new Coordinates(loc.x + 1, loc.y - 1);
+            coords.add(coord1);
+            coords.add(coord2);
+        }
+        else
+        {
+            Coordinates coord1 = new Coordinates(loc.x - 1, loc.y + 1);
+            Coordinates coord2 = new Coordinates(loc.x + 1, loc.y + 1);
+            coords.add(coord1);
+            coords.add(coord2);
+        }
+        return coords;
+    }
     public ArrayList<Coordinates> getValidMoves(final Coordinates loc, final Board boardState)
     {
         /* Movement pattern:

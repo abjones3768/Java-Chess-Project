@@ -1,5 +1,5 @@
 test:
-	javac *.java && java backendTest
+	mvn clean && mvn compile && mvn exec:java -Dexec.mainClass="backendTest"
 
 chess:
-	javac *.java && java chess
+	mvn clean && mvn compile && mvn exec:java -Dexec.mainClass="chess"

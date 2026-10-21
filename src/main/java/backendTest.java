@@ -1,4 +1,3 @@
-import src.*;
 import src.main.java.Board;
 import src.main.java.Coordinates;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 Todo:
 en passant
 enforce check
-make some build system thing so half of the repo isnt class files
 */
 
 public class backendTest {

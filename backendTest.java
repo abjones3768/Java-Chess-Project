@@ -1,4 +1,7 @@
 import src.*;
+import src.main.java.Board;
+import src.main.java.Coordinates;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 

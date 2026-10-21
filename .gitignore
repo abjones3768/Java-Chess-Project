@@ -1,1 +1,13 @@
 /.vs
+
+# Maven compiled files
+target/
+
+# Java compiled files
+*.class
+
+# VS Code local settings
+.vscode/
+
+# Scala Metals
+.metals/

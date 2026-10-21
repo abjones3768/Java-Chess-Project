@@ -1,16 +1,16 @@
-package src;
+package src.main.java;
 import java.util.ArrayList;
 
-public class Rook extends Piece
+public class Bishop extends Piece
 {
     void Piece()
     {
-        pieceChar = 'R';
+        pieceChar = 'B';
     }
     public ArrayList<Coordinates> getValidMoves(final Coordinates loc, final Board boardState)
     {
         /* Movement pattern:
-        Moves in a straight line
+        Moves diagonally
         */
         ArrayList<Coordinates> coords = new ArrayList<>();
         char color = boardState.getColor(loc);
@@ -19,8 +19,8 @@ public class Rook extends Piece
         else oppColor = 'W';
 
         boolean finished = false;
-        Coordinates locCheck = new Coordinates(loc.x - 1, loc.y);
-        while(!finished) // Left check
+        Coordinates locCheck = new Coordinates(loc.x - 1, loc.y - 1);
+        while(!finished) // Up left check
         {
             // If current check is in bounds and check location has no piece
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == '.')
@@ -28,6 +28,7 @@ public class Rook extends Piece
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
                 locCheck.x--;
+                locCheck.y--;
             }
             // If current check is in bounds and check location is opponent piece
             else if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == oppColor)
@@ -42,14 +43,39 @@ public class Rook extends Piece
         }
 
         finished = false;
-        locCheck = new Coordinates(loc.x + 1, loc.y);
-        while(!finished) // Right check
+        locCheck = new Coordinates(loc.x + 1, loc.y - 1);
+        while(!finished) // Up right check
         {
             // If current check is in bounds and check location has no piece
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == '.')
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
+                locCheck.x++;
+                locCheck.y--;
+            }
+            // If current check is in bounds and check location is opponent piece
+            else if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == oppColor)
+            {
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
+                finished = true;
+            }
+            // At this point, check is either not in bounds or a piece of the same color has been found.
+            // Either way, terminate loop.
+            else finished = true;
+        }
+
+        finished = false;
+        locCheck = new Coordinates(loc.x + 1, loc.y + 1);
+        while(!finished) // Down right check
+        {
+            // If current check is in bounds and check location has no piece
+            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == '.')
+            {
+                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
+                locCheck.y++;
                 locCheck.x++;
             }
             // If current check is in bounds and check location is opponent piece
@@ -65,38 +91,16 @@ public class Rook extends Piece
         }
 
         finished = false;
-        locCheck = new Coordinates(loc.x, loc.y + 1);
-        while(!finished) // Down check
+        locCheck = new Coordinates(loc.x - 1, loc.y + 1);
+        while(!finished) // Down left check
         {
             // If current check is in bounds and check location has no piece
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == '.')
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
+                locCheck.x--;
                 locCheck.y++;
-            }
-            // If current check is in bounds and check location is opponent piece
-            else if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == oppColor)
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-                finished = true;
-            }
-            // At this point, check is either not in bounds or a piece of the same color has been found.
-            // Either way, terminate loop.
-            else finished = true;
-        }
-
-        finished = false;
-        locCheck = new Coordinates(loc.x, loc.y - 1);
-        while(!finished) // Up check
-        {
-            // If current check is in bounds and check location has no piece
-            if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == '.')
-            {
-                Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
-                coords.add(locSubmit);
-                locCheck.y--;
             }
             // If current check is in bounds and check location is opponent piece
             else if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == oppColor)

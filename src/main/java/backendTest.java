@@ -6,8 +6,13 @@ import java.util.ArrayList;
 
 /*
 Todo:
+pieces still pathfind through king
 en passant
+pawn promotion
 enforce check
+checkmate
+stalemate
+engine
 */
 
 public class backendTest {

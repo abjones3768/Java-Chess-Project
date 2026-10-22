@@ -34,7 +34,7 @@ public class backendTest {
                 board.turnChar = 'B';
                 System.out.println("Black to move\n");
             }
-            if (board.isCheck())
+            if (board.isCheck() != '.')
             {
                 System.out.println("Check!");
             }

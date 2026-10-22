@@ -49,6 +49,25 @@ public class Board {
     // Moved when other pieces are moved
     // Used to validate which pieces can be chosen in what scenario
 
+    // Default constructor
+    public Board()
+    {
+        return;
+    }
+
+    // Copy constructor
+    public Board(Board rhs)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                this.boardPieces[i][j] = rhs.boardPieces[i][j];
+                this.boardColors[i][j] = rhs.boardColors[i][j];
+            }
+        }
+    }
+
     // Board Methods
     public void movePiece(Coordinates source, Coordinates dest)
     {
@@ -130,7 +149,7 @@ public class Board {
         boardPieces[source.y][source.x] = '.'; // Delete piece
         boardColors[source.y][source.x] = '.'; // Delete color
     }
-    public boolean isCheck()
+    public char isCheck()
     {
         Coordinates locCheck = new Coordinates();
         ArrayList<Coordinates> coords = new ArrayList<>();
@@ -181,13 +200,13 @@ public class Board {
         {
             if (inBounds(coords.get(i)) && (getPiece(coords.get(i)) == 'K' && getColor(coords.get(i)) == 'W'))
             {
-                return true;
+                return 'W';
             }
         }
 
         locCheck = new Coordinates();
         check = new ArrayList<>();
-        for (int i = 0; i < 8; i++) // White check
+        for (int i = 0; i < 8; i++) // black check
         {
             for (int j = 0; j < 8; j++)
             {
@@ -226,11 +245,11 @@ public class Board {
         {
             if (getPiece(check.get(i)) == 'K' && getColor(check.get(i)) == 'B') 
             {
-                return true;
+                return 'B';
             }
         }
         
-        return false;
+        return '.';
     }
     public char getColor(Coordinates coord) // Returns corresponding color
     {
@@ -249,6 +268,16 @@ public class Board {
     {
         boardPieces[coord.y][coord.x] = piece;
         return;
+    }
+    public boolean validateNextMove(Coordinates source, Coordinates dest) // Returns false if move would result in check
+    {
+        Board nextBoard = new Board(this);
+        nextBoard.movePiece(source, dest);
+        if (nextBoard.isCheck() == nextBoard.getColor(dest)) 
+        {
+            return false;
+        }
+        return true;
     }
 
     private void resetPassant()

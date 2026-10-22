@@ -62,6 +62,16 @@ public class Pawn extends Piece
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
+            if (boardState.enPassant[loc.x - 1]) // Left en passant check
+            {
+                Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y - 1);
+                coords.add(locSubmit);
+            }
+            if (boardState.enPassant[loc.x + 1]) // Right en passant check
+            {
+                Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y - 1);
+                coords.add(locSubmit);
+            }
         }
         else // Black pawn check
         {
@@ -88,6 +98,16 @@ public class Pawn extends Piece
             if (boardState.inBounds(locCheck) && boardState.getColor(locCheck) == 'B') // Check if attackable square to the left is white
             {
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
+                coords.add(locSubmit);
+            }
+            if (boardState.enPassant[loc.x - 1]) // Left en passant check
+            {
+                Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y + 1);
+                coords.add(locSubmit);
+            }
+            if (boardState.enPassant[loc.x + 1]) // Right en passant check
+            {
+                Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y + 1);
                 coords.add(locSubmit);
             }
         }

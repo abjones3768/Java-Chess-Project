@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 /*
 Todo:
-pieces still pathfind through king
-en passant
 pawn promotion
 enforce check
 checkmate
@@ -93,7 +91,7 @@ public class backendTest {
                             System.out.println("Invalid move.");
                             continue;
                         }
-                        else break;
+                        break;
                     case 'N':
                         check = board.knightData.getValidMoves(source, board);
                         if (!board.knightData.validMove(check, dest))

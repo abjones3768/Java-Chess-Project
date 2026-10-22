@@ -52,6 +52,18 @@ public class Board {
     // Board Methods
     public void movePiece(Coordinates source, Coordinates dest)
     {
+        Coordinates passantcheck = new Coordinates(dest.x, dest.y + 1);
+        if (getPiece(source) == 'P' && getColor(source) == 'W' && getPiece(dest) == '.' && getPiece(passantcheck) == 'P' && enPassant[dest.x]) // White en passant check
+        {
+            boardPieces[passantcheck.y][passantcheck.x] = '.'; // Delete piece
+            boardColors[passantcheck.y][passantcheck.x] = '.'; // Delete color
+        }
+        passantcheck.y -= 2;
+        if (getPiece(source) == 'P' && getColor(source) == 'B' && getPiece(dest) == '.' && getPiece(passantcheck) == 'P' && enPassant[dest.x]) // Black en passant check
+        {
+            boardPieces[passantcheck.y][passantcheck.x] = '.'; // Delete piece
+            boardColors[passantcheck.y][passantcheck.x] = '.'; // Delete color
+        }
         resetPassant();
         if (getPiece(source) == 'P' && (dest.y > source.y + 1 || dest.y < source.y - 1)) // En passant check
         {

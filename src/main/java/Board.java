@@ -245,6 +245,11 @@ public class Board {
         if (coord.x > -1 && coord.x < 8 && coord.y > -1 && coord.y < 8) return true;
         else return false;
     }
+    public void promotePawn(Coordinates coord, char piece)
+    {
+        boardPieces[coord.y][coord.x] = piece;
+        return;
+    }
 
     private void resetPassant()
     {

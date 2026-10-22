@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 /*
 Todo:
-pawn promotion
 enforce check
 checkmate
 stalemate
@@ -138,6 +137,18 @@ public class backendTest {
                         System.exit(64);
                 }
                 board.movePiece(source, dest); // Unconditionally moves piece, as it has been validated by this point
+                if (board.getPiece(dest) == 'P' && (dest.y == 0 || dest.y == 7)) // Pawn promotion
+                {
+                    char choice = 'X';
+                    System.out.println("Select a piece (R, B, N, Q)");
+                    choice = Character.toUpperCase(input.nextLine().charAt(0));
+                    while (choice != 'R' && choice != 'B' && choice != 'N' && choice != 'Q')
+                    {
+                        System.out.println("Select a piece (R, B, N, Q)");
+                        choice = Character.toUpperCase(input.nextLine().charAt(0));
+                    }
+                    board.promotePawn(dest, choice);
+                }
                 finished = true;
             } // End while
         } // End game loop

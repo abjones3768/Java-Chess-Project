@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 /*
 Todo:
-fix en passant
-checkmate
-stalemate
 engine
 */
 
@@ -22,7 +19,21 @@ public class backendTest {
         while(true) // Game loop
         {
             board._printBoard(blank); // Display board
-
+            if (!board.moveExists('W') || !board.moveExists('B'))
+            {
+                if (board.isCheck('W'))
+                {
+                    System.out.println("black wins");
+                    System.exit(0);
+                }
+                if (board.isCheck('B'))
+                {
+                    System.out.println("white wins");
+                    System.exit(0);
+                }
+                System.out.println("stalemate");
+                System.exit(0);
+            }
             // Swap move (by default, turnChar is 'B', which swaps it to 'W' on first turn.)
             if (board.turnChar == 'B') 
             {

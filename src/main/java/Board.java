@@ -23,6 +23,7 @@ public class Board {
     public boolean leftBlackRookMoved = false;
     public boolean rightBlackRookMoved = false;
     public boolean[] enPassant = new boolean[8];
+    public boolean checkState = false;
 
     // Board data
     private char[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
@@ -202,6 +203,7 @@ public class Board {
             {
                 if (inBounds(coords.get(i)) && (getPiece(coords.get(i)) == 'K' && getColor(coords.get(i)) == 'W'))
                 {
+                    checkState = true;
                     return true;
                 }
             }
@@ -247,7 +249,57 @@ public class Board {
             {
                 if (getPiece(check.get(i)) == 'K' && getColor(check.get(i)) == 'B') 
                 {
+                    checkState = true;
                     return true;
+                }
+            }
+        }
+        checkState = false;
+        return false;
+    }
+    public boolean moveExists(char color)
+    {
+        ArrayList<Coordinates> check = new ArrayList<>();
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                Coordinates source = new Coordinates(i, j);
+                if(this.getColor(source) == color)
+                {
+                    switch (this.getPiece(source))
+                    {
+                        case 'P':
+                            check = this.pawnData.getValidMoves(source, this);
+                            break;
+                        case 'N':
+                            check = this.knightData.getValidMoves(source, this);
+                            break;
+                        case 'R':
+                            check = this.rookData.getValidMoves(source, this);
+                            break;
+                        case 'B':
+                            check = this.bishopData.getValidMoves(source, this);
+                            break;
+                        case 'Q':
+                            check = this.queenData.getValidMoves(source, this);
+                            break;
+                        case 'K':
+                            check = this.kingData.getValidMoves(source, this);
+                            break;
+                        default:
+                            System.exit(64);
+                    }
+                    for (int k = 0; k < check.size(); k++)
+                    {
+                        Coordinates dest = check.get(k);
+                        if (!this.considerCheck(source, dest))
+                        {
+                            check.remove(dest);
+                            k--;
+                        }
+                    }
+                    if (!check.isEmpty()) return true;
                 }
             }
         }

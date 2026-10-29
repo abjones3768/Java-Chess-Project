@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 /*
 Todo:
-enforce check
+fix considerCheck somehow
+fix en passant
 checkmate
 stalemate
 engine
@@ -69,6 +70,7 @@ public class backendTest {
                     default:
                         System.exit(64);
                 }
+                if (check.isEmpty()) continue;
                 board._printBoard(check);
 
                 System.out.println("\nSelect a destination:");

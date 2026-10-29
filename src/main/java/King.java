@@ -142,7 +142,7 @@ public class King extends Piece
                 locCheck.x = j;
                 locCheck.y = i;
                 ArrayList<Coordinates> check = new ArrayList<>();
-                if (boardState.getColor(locCheck) == 'B')
+                if (boardState.getColor(locCheck) != color)
                 {
                     switch (boardState.getPiece(locCheck))
                     {

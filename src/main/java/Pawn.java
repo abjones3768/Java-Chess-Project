@@ -62,12 +62,15 @@ public class Pawn extends Piece
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
-            if (boardState.enPassant[loc.x - 1]) // Left en passant check
+            locCheck.x = loc.x - 1;
+            locCheck.y = loc.y;
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1]) // Left en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y - 1);
                 coords.add(locSubmit);
             }
-            if (boardState.enPassant[loc.x + 1]) // Right en passant check
+            locCheck.x += 2;
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1]) // Right en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y - 1);
                 coords.add(locSubmit);
@@ -100,12 +103,15 @@ public class Pawn extends Piece
                 Coordinates locSubmit = new Coordinates(locCheck.x, locCheck.y);
                 coords.add(locSubmit);
             }
-            if (boardState.enPassant[loc.x - 1]) // Left en passant check
+            locCheck.x = loc.x - 1;
+            locCheck.y = loc.y;
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1]) // Left en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y + 1);
                 coords.add(locSubmit);
             }
-            if (boardState.enPassant[loc.x + 1]) // Right en passant check
+            locCheck.x += 2;
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1]) // Right en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y + 1);
                 coords.add(locSubmit);

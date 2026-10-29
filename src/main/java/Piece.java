@@ -17,22 +17,6 @@ public abstract class Piece {
     {
         return pieceChar;
     }
-    public ArrayList<Coordinates> considerCheck(Coordinates source, ArrayList<Coordinates> checkList, Board boardState)
-    {
-        for (int i = 0; i < checkList.size(); i++)
-        {   // For each move in checkList, create a new board, do that move on new board,
-            // remove it from checkList if that board state results in a check for that side
-            Coordinates check = checkList.get(i);
-            Board checkBoard = new Board(boardState);
-            char color = checkBoard.getColor(source);
-            checkBoard.movePiece(source, check);
-            if (checkBoard.isCheck() == color)
-            {
-                checkList.remove(check);
-            }
-        }
-        return checkList;
-    }
     public boolean validMove(ArrayList<Coordinates> check, Coordinates dest)
     {
         if (check.isEmpty()) // Check for presence of valid moves

@@ -149,107 +149,109 @@ public class Board {
         boardPieces[source.y][source.x] = '.'; // Delete piece
         boardColors[source.y][source.x] = '.'; // Delete color
     }
-    public char isCheck()
+    public boolean isCheck(char color)
     {
         Coordinates locCheck = new Coordinates();
         ArrayList<Coordinates> coords = new ArrayList<>();
         ArrayList<Coordinates> check = new ArrayList<>();
-        for (int i = 0; i < 8; i++) // White check
+        if (color == 'W')
         {
-            for (int j = 0; j < 8; j++)
+            for (int i = 0; i < 8; i++) // White check
             {
-                locCheck.x = j;
-                locCheck.y = i;
-                if (getColor(locCheck) == 'B')
+                for (int j = 0; j < 8; j++)
                 {
-                    switch (getPiece(locCheck))
+                    locCheck.x = j;
+                    locCheck.y = i;
+                    if (getColor(locCheck) == 'B')
                     {
-                        case 'P':
-                            check = pawnData.getAttackingMoves(locCheck, this);
-                            break;
-                        case 'N':
-                            check = knightData.getValidMoves(locCheck, this);
-                            break;
-                        case 'R':
-                            check = rookData.getValidMoves(locCheck, this);
-                            break;
-                        case 'B':
-                            check = bishopData.getValidMoves(locCheck, this);
-                            break;
-                        case 'Q':
-                            check = queenData.getValidMoves(locCheck, this);
-                            break;
-                        case 'K':
-                            kingData.recurse = false;
-                            check = kingData.getValidMoves(locCheck, this);
-                            break;
-                        default:
-                            break;
+                        switch (getPiece(locCheck))
+                        {
+                            case 'P':
+                                check = pawnData.getAttackingMoves(locCheck, this);
+                                break;
+                            case 'N':
+                                check = knightData.getValidMoves(locCheck, this);
+                                break;
+                            case 'R':
+                                check = rookData.getValidMoves(locCheck, this);
+                                break;
+                            case 'B':
+                                check = bishopData.getValidMoves(locCheck, this);
+                                break;
+                            case 'Q':
+                                check = queenData.getValidMoves(locCheck, this);
+                                break;
+                            case 'K':
+                                kingData.recurse = false;
+                                check = kingData.getValidMoves(locCheck, this);
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
-                if (!check.isEmpty())
-                {
-                    for (int k = 0; k < check.size(); k++)
+                    if (!check.isEmpty())
                     {
-                        coords.add(check.get(k));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < coords.size(); i++)
-        {
-            if (inBounds(coords.get(i)) && (getPiece(coords.get(i)) == 'K' && getColor(coords.get(i)) == 'W'))
-            {
-                return 'W';
-            }
-        }
-
-        locCheck = new Coordinates();
-        check = new ArrayList<>();
-        for (int i = 0; i < 8; i++) // black check
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                locCheck.x = j;
-                locCheck.y = i;
-                if (getColor(locCheck) == 'W')
-                {
-                    switch (getPiece(locCheck))
-                    {
-                        case 'P':
-                            check = pawnData.getAttackingMoves(locCheck, this);
-                            break;
-                        case 'N':
-                            check = knightData.getValidMoves(locCheck, this);
-                            break;
-                        case 'R':
-                            check = rookData.getValidMoves(locCheck, this);
-                            break;
-                        case 'B':
-                            check = bishopData.getValidMoves(locCheck, this);
-                            break;
-                        case 'Q':
-                            check = queenData.getValidMoves(locCheck, this);
-                            break;
-                        case 'K':
-                            kingData.recurse = false;
-                            check = kingData.getValidMoves(locCheck, this);
-                            break;
-                        default:
-                            break;
+                        for (int k = 0; k < check.size(); k++)
+                        {
+                            coords.add(check.get(k));
+                        }
                     }
                 }
             }
-        }
-        for (int i = 0; i < check.size(); i++)
-        {
-            if (getPiece(check.get(i)) == 'K' && getColor(check.get(i)) == 'B') 
+            for (int i = 0; i < coords.size(); i++)
             {
-                return 'B';
+                if (inBounds(coords.get(i)) && (getPiece(coords.get(i)) == 'K' && getColor(coords.get(i)) == 'W'))
+                {
+                    return true;
+                }
             }
         }
-        
-        return '.';
+        if (color == 'B')
+        {
+            for (int i = 0; i < 8; i++) // black check
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    locCheck.x = j;
+                    locCheck.y = i;
+                    if (getColor(locCheck) == 'W')
+                    {
+                        switch (getPiece(locCheck))
+                        {
+                            case 'P':
+                                check = pawnData.getAttackingMoves(locCheck, this);
+                                break;
+                            case 'N':
+                                check = knightData.getValidMoves(locCheck, this);
+                                break;
+                            case 'R':
+                                check = rookData.getValidMoves(locCheck, this);
+                                break;
+                            case 'B':
+                                check = bishopData.getValidMoves(locCheck, this);
+                                break;
+                            case 'Q':
+                                check = queenData.getValidMoves(locCheck, this);
+                                break;
+                            case 'K':
+                                kingData.recurse = false;
+                                check = kingData.getValidMoves(locCheck, this);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < check.size(); i++)
+            {
+                if (getPiece(check.get(i)) == 'K' && getColor(check.get(i)) == 'B') 
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public char getColor(Coordinates coord) // Returns corresponding color
     {
@@ -269,11 +271,11 @@ public class Board {
         boardPieces[coord.y][coord.x] = piece;
         return;
     }
-    public boolean validateNextMove(Coordinates source, Coordinates dest) // Returns false if move would result in check
+    public boolean considerCheck(Coordinates source, Coordinates dest) // Returns false if move would result in check
     {
         Board nextBoard = new Board(this);
         nextBoard.movePiece(source, dest);
-        if (nextBoard.isCheck() == nextBoard.getColor(dest)) 
+        if (nextBoard.isCheck(nextBoard.getColor(dest))) 
         {
             return false;
         }

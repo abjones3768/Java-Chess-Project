@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 /*
 Todo:
-fix considerCheck somehow
 fix en passant
 checkmate
 stalemate
@@ -35,7 +34,7 @@ public class backendTest {
                 board.turnChar = 'B';
                 System.out.println("Black to move\n");
             }
-            if (board.isCheck() != '.')
+            if (board.isCheck('W') || board.isCheck('B'))
             {
                 System.out.println("Check!");
             }
@@ -71,6 +70,15 @@ public class backendTest {
                         System.exit(64);
                 }
                 if (check.isEmpty()) continue;
+                for (int i = 0; i < check.size(); i++)
+                {
+                    Coordinates dest = check.get(i);
+                    if (!board.considerCheck(source, dest))
+                    {
+                        check.remove(dest);
+                        i--;
+                    }
+                }
                 board._printBoard(check);
 
                 System.out.println("\nSelect a destination:");
@@ -82,7 +90,6 @@ public class backendTest {
                     case 'P':
                         // Each piece has getValidMoves, which returns a list
                         // of coordinates, where the coordinates are all valid moves
-                        check = board.pawnData.getValidMoves(source, board);
 
                         // validMove takes the list, and returns true if dest is
                         // contained in that list. If it returns false, move was
@@ -94,7 +101,6 @@ public class backendTest {
                         }
                         break;
                     case 'N':
-                        check = board.knightData.getValidMoves(source, board);
                         if (!board.knightData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
@@ -102,7 +108,6 @@ public class backendTest {
                         }
                         else break;
                     case 'R':
-                        check = board.rookData.getValidMoves(source, board);
                         if (!board.rookData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
@@ -110,7 +115,6 @@ public class backendTest {
                         }
                         else break;
                     case 'B':
-                        check = board.bishopData.getValidMoves(source, board);
                         if (!board.bishopData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
@@ -118,7 +122,6 @@ public class backendTest {
                         }
                         else break;
                     case 'Q':
-                        check = board.queenData.getValidMoves(source, board);
                         if (!board.queenData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");
@@ -126,7 +129,6 @@ public class backendTest {
                         }
                         else break;
                     case 'K':
-                        check = board.kingData.getValidMoves(source, board);
                         if (!board.kingData.validMove(check, dest))
                         {
                             System.out.println("Invalid move.");

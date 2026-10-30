@@ -18,8 +18,11 @@ public class backendTest {
     {
         while(true) // Game loop
         {
-            board._printBoard(blank); // Display board
-            if (!board.moveExists('W') || !board.moveExists('B'))
+            // Display board
+            board._printBoard(blank);
+
+            // Check for stalemate
+            if (!board.moveExists('W') || !board.moveExists('B')) 
             {
                 if (board.isCheck('W'))
                 {
@@ -34,6 +37,7 @@ public class backendTest {
                 System.out.println("stalemate");
                 System.exit(0);
             }
+            
             // Swap move (by default, turnChar is 'B', which swaps it to 'W' on first turn.)
             if (board.turnChar == 'B') 
             {
@@ -45,20 +49,32 @@ public class backendTest {
                 board.turnChar = 'B';
                 System.out.println("Black to move\n");
             }
+
+            // Check for check (sets flag in board data as well as telling player)
             if (board.isCheck('W') || board.isCheck('B'))
             {
                 System.out.println("Check!");
             }
-            boolean finished = false; // Loop flag
+
+            // Loop to get turn
+            boolean finished = false;
             while (!finished)
             {
+                // Retrieve move
                 System.out.println("Select a piece:");
-                Coordinates source = board._getMove(); // Gets move
-                if (board.getColor(source) != board.turnChar) continue; // Validate piece was correct color
+                Coordinates source = board._getMove();
 
-                ArrayList<Coordinates> check = new ArrayList<>(); // List of coordinates
-                switch (board.getPiece(source)) // Get valid moves to augment terminal output
+                 // Validate piece was correct color
+                if (board.getColor(source) != board.turnChar) continue;
+
+                 // List of coordinates
+                ArrayList<Coordinates> check = new ArrayList<>();
+
+                 // Get valid moves of source piece
+                switch (board.getPiece(source))
                 {
+                    // Each piece has getValidMoves, which returns a list
+                    // of coordinates, where the coordinates are all valid moves
                     case 'P':
                         check = board.pawnData.getValidMoves(source, board);
                         break;
@@ -80,7 +96,11 @@ public class backendTest {
                     default:
                         System.exit(64);
                 }
+
+                // Redo loop if piece has no valid moves
                 if (check.isEmpty()) continue;
+
+                // Iterate through moves to check if it would result in a check (illegal move)
                 for (int i = 0; i < check.size(); i++)
                 {
                     Coordinates dest = check.get(i);
@@ -90,19 +110,20 @@ public class backendTest {
                         i--;
                     }
                 }
-                board._printBoard(check);
 
+                // Print board and retrieve move
+                board._printBoard(check);
                 System.out.println("\nSelect a destination:");
                 Coordinates dest = board._getMove();
-                if (board.getColor(dest) == board.turnChar) continue; // Validate piece was not current turn color
 
-                switch (board.getPiece(source)) // Validate move destination
+                // Validate piece was not current turn color (would result in capturing own piece)
+                if (board.getColor(dest) == board.turnChar) continue;
+
+                 // Validate move destination
+                switch (board.getPiece(source))
                 {
                     case 'P':
-                        // Each piece has getValidMoves, which returns a list
-                        // of coordinates, where the coordinates are all valid moves
-
-                        // validMove takes the list, and returns true if dest is
+                        // validMove takes the list of moves, and returns true if dest is
                         // contained in that list. If it returns false, move was
                         // invalid, do continue to redo loop until a valid move is chosen
                         if (!board.pawnData.validMove(check, dest))         
@@ -148,11 +169,14 @@ public class backendTest {
                         else break;
                     default:
                         // this only happens when you try to move a piece with no movement data
-                        // once all pieces are implemented this shouldnt happen
                         System.exit(64);
                 }
-                board.movePiece(source, dest); // Unconditionally moves piece, as it has been validated by this point
-                if (board.getPiece(dest) == 'P' && (dest.y == 0 || dest.y == 7)) // Pawn promotion
+
+                // Unconditionally moves piece, as it has been validated by this point
+                board.movePiece(source, dest);
+
+                // Pawn promotion
+                if (board.getPiece(dest) == 'P' && (dest.y == 0 || dest.y == 7))
                 {
                     char choice = 'X';
                     System.out.println("Select a piece (R, B, N, Q)");

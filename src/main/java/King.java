@@ -75,13 +75,19 @@ public class King extends Piece
                 {
                     locCheck.x = loc.x - 1;
                     locCheck.y = loc.y;
+                    Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
                     if (boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x -= 1;
                         if (boardState.getPiece(locCheck) == '.')
                         {
-                            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
-                            coords.add(locAdd);
+                            Board newBoard = new Board(boardState);
+                            newBoard.movePiece(loc, castleCheck);
+                            if (!newBoard.isCheck('W'))
+                            {
+                                Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+                                coords.add(locAdd);
+                            }
                         }
                     }
                 }
@@ -89,13 +95,19 @@ public class King extends Piece
                 {
                     locCheck.x = loc.x + 1;
                     locCheck.y = loc.y;
+                    Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
                     if (boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x += 1;
                         if (boardState.getPiece(locCheck) == '.')
                         {
-                            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
-                            coords.add(locAdd);
+                            Board newBoard = new Board(boardState);
+                            newBoard.movePiece(loc, castleCheck);
+                            if (!newBoard.isCheck('W'))
+                            {
+                                Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+                                coords.add(locAdd);
+                            }
                         }
                     }
                 }
@@ -109,13 +121,19 @@ public class King extends Piece
                 {
                     locCheck.x = loc.x - 1;
                     locCheck.y = loc.y;
+                    Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
                     if (boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x -= 1;
                         if (boardState.getPiece(locCheck) == '.')
                         {
-                            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
-                            coords.add(locAdd);
+                            Board newBoard = new Board(boardState);
+                            newBoard.movePiece(loc, castleCheck);
+                            if (!newBoard.isCheck('B'))
+                            {
+                                Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+                                coords.add(locAdd);
+                            }
                         }
                     }
                 }
@@ -123,13 +141,19 @@ public class King extends Piece
                 {
                     locCheck.x = loc.x + 1;
                     locCheck.y = loc.y;
+                    Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
                     if (boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x += 1;
                         if (boardState.getPiece(locCheck) == '.')
                         {
-                            Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
-                            coords.add(locAdd);
+                            Board newBoard = new Board(boardState);
+                            newBoard.movePiece(loc, castleCheck);
+                            if (!newBoard.isCheck('B'))
+                            {
+                                Coordinates locAdd = new Coordinates(locCheck.x, locCheck.y);
+                                coords.add(locAdd);
+                            }
                         }
                     }
                 }

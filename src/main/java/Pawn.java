@@ -64,13 +64,13 @@ public class Pawn extends Piece
             }
             locCheck.x = loc.x - 1;
             locCheck.y = loc.y;
-            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1] && boardState.getPiece(locCheck) == 'P') // Left en passant check
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1] && boardState.getPiece(locCheck) == 'P' && boardState.getColor(locCheck) == 'B') // Left en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y - 1);
                 coords.add(locSubmit);
             }
             locCheck.x += 2;
-            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1] && boardState.getPiece(locCheck) == 'P') // Right en passant check
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1] && boardState.getPiece(locCheck) == 'P' && boardState.getColor(locCheck) == 'B') // Right en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y - 1);
                 coords.add(locSubmit);
@@ -105,13 +105,13 @@ public class Pawn extends Piece
             }
             locCheck.x = loc.x - 1;
             locCheck.y = loc.y;
-            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1] && boardState.getPiece(locCheck) == 'P') // Left en passant check
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x - 1] && boardState.getPiece(locCheck) == 'P' && boardState.getColor(locCheck) == 'W') // Left en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x - 1, loc.y + 1);
                 coords.add(locSubmit);
             }
             locCheck.x += 2;
-            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1] && boardState.getPiece(locCheck) == 'P') // Right en passant check
+            if (boardState.inBounds(locCheck) && boardState.enPassant[loc.x + 1] && boardState.getPiece(locCheck) == 'P' && boardState.getColor(locCheck) == 'W') // Right en passant check
             {
                 Coordinates locSubmit = new Coordinates(loc.x + 1, loc.y + 1);
                 coords.add(locSubmit);

@@ -210,7 +210,7 @@ public class Board {
         }
         if (color == 'B')
         {
-            for (int i = 0; i < 8; i++) // black check
+            for (int i = 0; i < 8; i++) // Black check
             {
                 for (int j = 0; j < 8; j++)
                 {
@@ -243,11 +243,18 @@ public class Board {
                                 break;
                         }
                     }
+                    if (!check.isEmpty())
+                    {
+                        for (int k = 0; k < check.size(); k++)
+                        {
+                            coords.add(check.get(k));
+                        }
+                    }
                 }
             }
-            for (int i = 0; i < check.size(); i++)
+            for (int i = 0; i < coords.size(); i++)
             {
-                if (getPiece(check.get(i)) == 'K' && getColor(check.get(i)) == 'B') 
+                if (inBounds(coords.get(i)) && (getPiece(coords.get(i)) == 'K' && getColor(coords.get(i)) == 'B'))
                 {
                     checkState = true;
                     return true;

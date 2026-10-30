@@ -76,10 +76,10 @@ public class King extends Piece
                     locCheck.x = loc.x - 1;
                     locCheck.y = loc.y;
                     Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
-                    if (boardState.getPiece(locCheck) == '.')
+                    if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x -= 1;
-                        if (boardState.getPiece(locCheck) == '.')
+                        if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                         {
                             Board newBoard = new Board(boardState);
                             newBoard.movePiece(loc, castleCheck);
@@ -96,10 +96,10 @@ public class King extends Piece
                     locCheck.x = loc.x + 1;
                     locCheck.y = loc.y;
                     Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
-                    if (boardState.getPiece(locCheck) == '.')
+                    if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x += 1;
-                        if (boardState.getPiece(locCheck) == '.')
+                        if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                         {
                             Board newBoard = new Board(boardState);
                             newBoard.movePiece(loc, castleCheck);
@@ -122,10 +122,10 @@ public class King extends Piece
                     locCheck.x = loc.x - 1;
                     locCheck.y = loc.y;
                     Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
-                    if (boardState.getPiece(locCheck) == '.')
+                    if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x -= 1;
-                        if (boardState.getPiece(locCheck) == '.')
+                        if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                         {
                             Board newBoard = new Board(boardState);
                             newBoard.movePiece(loc, castleCheck);
@@ -142,10 +142,10 @@ public class King extends Piece
                     locCheck.x = loc.x + 1;
                     locCheck.y = loc.y;
                     Coordinates castleCheck = new Coordinates(locCheck.x, locCheck.y);
-                    if (boardState.getPiece(locCheck) == '.')
+                    if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                     {
                         locCheck.x += 1;
-                        if (boardState.getPiece(locCheck) == '.')
+                        if (boardState.inBounds(locCheck) && boardState.getPiece(locCheck) == '.')
                         {
                             Board newBoard = new Board(boardState);
                             newBoard.movePiece(loc, castleCheck);

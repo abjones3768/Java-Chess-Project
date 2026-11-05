@@ -1,13 +1,9 @@
 import src.main.java.Board;
 import src.main.java.Coordinates;
+import src.main.java.Engine;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-
-/*
-Todo:
-engine
-*/
 
 public class backendTest {
     Scanner input = new Scanner(System.in);
@@ -16,7 +12,10 @@ public class backendTest {
 
     public void main()
     {
-        while(true) // Game loop
+        Engine engine = new Engine(4);
+        engine.getMove(board);
+        //while(true) // Game loop
+        if (false) //kill game for engine test
         {
             // Display board
             board._printBoard(blank);

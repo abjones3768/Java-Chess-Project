@@ -15,7 +15,7 @@ public class Board {
     public King kingData = new King();
 
     // Game state data (public visibility for convenience)
-    public char turnChar = 'B';
+    public char turnChar = 'W'; // CHANGE TO WHITE AFTER ENGINE
     public boolean whiteKingMoved = false;
     public boolean blackKingMoved = false;
     public boolean leftWhiteRookMoved = false;

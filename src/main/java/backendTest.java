@@ -12,14 +12,14 @@ public class backendTest {
 
     public void main()
     {
-        Engine engine = new Engine(6);
+        Engine engine = new Engine(4);
         ArrayList<Coordinates> engineMove = engine.getMove(board);
         System.out.println("Best engine move: " + engineMove.get(0).x + ", " + engineMove.get(0).y + " to " + engineMove.get(1).x + ", " + engineMove.get(1).y);
         //while(true) // Game loop
         if (false) //kill game for engine test
         {
             // Display board
-            board._printBoard(blank);
+            _printBoard(blank);
 
             // Check for stalemate
             if (!board.moveExists('W') || !board.moveExists('B')) 
@@ -62,7 +62,7 @@ public class backendTest {
             {
                 // Retrieve move
                 System.out.println("Select a piece:");
-                Coordinates source = board._getMove();
+                Coordinates source = _getMove();
 
                  // Validate piece was correct color
                 if (board.getColor(source) != board.turnChar) continue;
@@ -112,9 +112,9 @@ public class backendTest {
                 }
 
                 // Print board and retrieve move
-                board._printBoard(check);
+                _printBoard(check);
                 System.out.println("\nSelect a destination:");
-                Coordinates dest = board._getMove();
+                Coordinates dest = _getMove();
 
                 // Validate piece was not current turn color (would result in capturing own piece)
                 if (board.getColor(dest) == board.turnChar) continue;
@@ -192,4 +192,99 @@ public class backendTest {
             } // End while
         } // End game loop
     } // End main
+
+    public final String _RESET = "\u001B[0m";
+    public final String _WHITE = "\033[38;5;255m";
+    public final String _BLACK = "\033[90m";
+    public final String _BROWN = "\033[0;33m";
+    public final String _GREENBG = "\033[42m";
+
+    public Coordinates _getMove() // Get move input and convert into usable format
+    {
+        Coordinates move = new Coordinates();
+        boolean invalid = true;
+        while (invalid)
+        {
+            System.out.print("Enter X coordinate: ");
+            int x = input.nextInt();
+            if (x > 8 || x < 1) continue; // Validate input is in bounds
+
+            System.out.print("Enter Y coordinate: ");
+            int y = input.nextInt();
+            if (y > 8 || y < 1) continue; // Validate input is in bounds
+
+            if (y == 8) y = 1; //idk how to do this elegantly 
+            else if (y == 7) y = 2;
+            else if (y == 6) y = 3;
+            else if (y == 5) y = 4;
+            else if (y == 4) y = 5;
+            else if (y == 3) y = 6;
+            else if (y == 2) y = 7;
+            else if (y == 1) y = 8;
+
+            move.x = --x;
+            move.y = --y;
+            invalid = false;
+        }
+        return move;
+    }
+    public void _printBoard(ArrayList<Coordinates> highlight)
+    {
+        // Clears screen somehow idk
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                boolean colorMove = false;
+                if (!highlight.isEmpty())
+                {
+                    Coordinates current = new Coordinates(j, i);
+                    for (int k = 0; k < highlight.size(); k ++) // evil time complexity
+                    {
+                        if (current.x == highlight.get(k).x && current.y == highlight.get(k).y)
+                        {
+                            colorMove = true;
+                        }
+                    }
+                }
+                if (board.getColor(new Coordinates(j, i)) == 'W')
+                {
+                    if (colorMove)
+                    {
+                        System.out.print(_WHITE + _GREENBG + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_WHITE + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                }
+                else if (board.getColor(new Coordinates(j, i)) == 'B')
+                {
+                    if (colorMove)
+                    {
+                        System.out.print(_BLACK + _GREENBG + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_BLACK + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                }
+                else 
+                {
+                    if (colorMove)
+                    {
+                        System.out.print(_BROWN + _GREENBG + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                    else
+                    {
+                        System.out.print(_BROWN + board.getPiece(new Coordinates(j, i)) + " " + _RESET);
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
 } // End class definition

@@ -1,5 +1,7 @@
 /.vs
 
+jprofiler_linux-x64_16_3.sh
+
 # Maven compiled files
 target/
 

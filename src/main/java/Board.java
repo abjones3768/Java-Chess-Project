@@ -1,11 +1,7 @@
 package src.main.java;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Board {
-    // Boilerplate
-    Scanner input = new Scanner(System.in);
-
     // Piece data
     public Pawn pawnData = new Pawn();
     public Knight knightData = new Knight();
@@ -143,7 +139,24 @@ public class Board {
                     newDest.x = 3;
                     newSource.x = 0;
                 }
-                movePiece(newSource, newDest); // Move rook
+                if (getPiece(newSource) == 'R') // Rook movement check
+                {
+                    if (getColor(newSource) == 'W')
+                    {
+                        if (newSource.x == 0) leftWhiteRookMoved = true;
+                        if (newSource.x == 7) rightWhiteRookMoved = true;
+                    }
+                    else
+                    {
+                        if (newSource.x == 0) leftBlackRookMoved = true;
+                        if (newSource.x == 7) rightBlackRookMoved = true;
+                    }
+                }
+                // Manually move rook because the engine somehow got in an infinite loop when i recursively called here
+                boardPieces[newDest.y][newDest.x] = boardPieces[newSource.y][newSource.x]; // Copy piece
+                boardColors[newDest.y][newDest.x] = boardColors[newSource.y][newSource.x]; // Copy color
+                boardPieces[newSource.y][newSource.x] = '.'; // Delete piece
+                boardColors[newSource.y][newSource.x] = '.'; // Delete color
             }
         boardPieces[dest.y][dest.x] = boardPieces[source.y][source.x]; // Copy piece
         boardColors[dest.y][dest.x] = boardColors[source.y][source.x]; // Copy color
@@ -348,103 +361,6 @@ public class Board {
             enPassant[i] = false;
         }
         return;
-    }
-
-    // The remaining data and methods are for text based input and output, intended
-    // for the testing environment. Should not be used in proper front end implementation
-    public final String _RESET = "\u001B[0m";
-    public final String _WHITE = "\033[38;5;255m";
-    public final String _BLACK = "\033[90m";
-    public final String _BROWN = "\033[0;33m";
-    public final String _GREENBG = "\033[42m";
-
-    public Coordinates _getMove() // Get move input and convert into usable format
-    {
-        Coordinates move = new Coordinates();
-        boolean invalid = true;
-        while (invalid)
-        {
-            System.out.print("Enter X coordinate: ");
-            int x = input.nextInt();
-            if (x > 8 || x < 1) continue; // Validate input is in bounds
-
-            System.out.print("Enter Y coordinate: ");
-            int y = input.nextInt();
-            if (y > 8 || y < 1) continue; // Validate input is in bounds
-
-            if (y == 8) y = 1; //idk how to do this elegantly 
-            else if (y == 7) y = 2;
-            else if (y == 6) y = 3;
-            else if (y == 5) y = 4;
-            else if (y == 4) y = 5;
-            else if (y == 3) y = 6;
-            else if (y == 2) y = 7;
-            else if (y == 1) y = 8;
-
-            move.x = --x;
-            move.y = --y;
-            invalid = false;
-        }
-        return move;
-    }
-    public void _printBoard(ArrayList<Coordinates> highlight)
-    {
-        // Clears screen somehow idk
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                boolean colorMove = false;
-                if (!highlight.isEmpty())
-                {
-                    Coordinates current = new Coordinates(j, i);
-                    for (int k = 0; k < highlight.size(); k ++) // evil time complexity
-                    {
-                        if (current.x == highlight.get(k).x && current.y == highlight.get(k).y)
-                        {
-                            colorMove = true;
-                        }
-                    }
-                }
-                if (boardColors[i][j] == 'W')
-                {
-                    if (colorMove)
-                    {
-                        System.out.print(_WHITE + _GREENBG + boardPieces[i][j] + " " + _RESET);
-                    }
-                    else
-                    {
-                        System.out.print(_WHITE + boardPieces[i][j] + " " + _RESET);
-                    }
-                }
-                else if (boardColors[i][j] == 'B')
-                {
-                    if (colorMove)
-                    {
-                        System.out.print(_BLACK + _GREENBG + boardPieces[i][j] + " " + _RESET);
-                    }
-                    else
-                    {
-                        System.out.print(_BLACK + boardPieces[i][j] + " " + _RESET);
-                    }
-                }
-                else 
-                {
-                    if (colorMove)
-                    {
-                        System.out.print(_BROWN + _GREENBG + boardPieces[i][j] + " " + _RESET);
-                    }
-                    else
-                    {
-                        System.out.print(_BROWN + boardPieces[i][j] + " " + _RESET);
-                    }
-                }
-            }
-            System.out.println();
-        }
     }
 }
 

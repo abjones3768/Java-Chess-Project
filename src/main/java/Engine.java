@@ -60,7 +60,7 @@ public class Engine
                         none = true;
                         break;
                 }
-                if (none) break;
+                if (none) continue;
                 moves.add(check);
             }
         }
@@ -148,7 +148,7 @@ public class Engine
         }
         if (curDepth > 1)
         {
-            curDepth--;
+            int nextDepth = curDepth - 1;
             ArrayList<ArrayList<Coordinates>> moves = new ArrayList<>();
             ArrayList<Coordinates> sources = new ArrayList<>();
             int k = 0;
@@ -157,7 +157,7 @@ public class Engine
                 for (int j = 0; j < 8; j++)
                 {
                     Coordinates newSource = new Coordinates(i, j);
-                    if (board.getColor(newSource) != nextBoard.turnChar) continue;
+                    if (nextBoard.getColor(newSource) != nextBoard.turnChar) continue;
                     ArrayList<Coordinates> check = new ArrayList<>();
                     boolean none = false;
                     switch (nextBoard.getPiece(newSource))
@@ -198,7 +198,7 @@ public class Engine
             {
                 for (int j = 0; j < moves.get(i).size(); j++)
                 {
-                    branchData newBranch = branchRecurse(nextBoard, curDepth, sources.get(k), moves.get(i).get(j));
+                    branchData newBranch = branchRecurse(nextBoard, nextDepth, sources.get(k), moves.get(i).get(j));
                     branch.points += newBranch.points;
                     branch.checkmates += newBranch.checkmates;
                 }

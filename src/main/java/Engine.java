@@ -16,7 +16,7 @@ public class Engine
 
     // Theory: Iterate through each move of each piece, call branchRecurse with one of those moves,
     // branchRecurse calls itself with decreasing depth, doing every move in the current position.
-    public Coordinates getMove(final Board board)
+    public ArrayList<Coordinates> getMove(final Board board)
     {
         ArrayList<ArrayList<Coordinates>> moves = new ArrayList<>();
         ArrayList<Coordinates> sources = new ArrayList<>();
@@ -64,24 +64,46 @@ public class Engine
                 moves.add(check);
             }
         }
-        int x = 0;
+        branchData bestBranch = new branchData();
+        int bestK = 0;
+        int bestI = 0;
+        int bestJ = 0;
+        int branchI = 0;
         for (int i = 0; i < moves.size(); i++)
         {
             for (int j = 0; j < moves.get(i).size(); j++)
             {
-                System.out.println("Checking branch " + x);
-                x++;
-                branches.add(branchRecurse(board, this.depth, sources.get(k), moves.get(i).get(j)));
-                System.out.println("From: " + sources.get(k).x + ", " + sources.get(k).y + " to: " + moves.get(i).get(j).x + ", " + moves.get(i).get(j).y);
+                branchI++;
+                System.out.println("Checking branch " + branchI);
+                branchData checkBranch = branchRecurse(board, this.depth, sources.get(k), moves.get(i).get(j));
+                if (checkBranch.checkmates > bestBranch.checkmates) 
+                {
+                    bestBranch = checkBranch;
+                    bestK = k;
+                    bestI = i;
+                    bestJ = j;
+                }
+                if (checkBranch.checkmates < bestBranch.checkmates) continue;
+                if (checkBranch.checkmates == bestBranch.checkmates)
+                {
+                    if (checkBranch.points > bestBranch.points) 
+                    {
+                        bestBranch = checkBranch;
+                        bestK = k;
+                        bestI = i;
+                        bestJ = j;
+                    }
+                    if (checkBranch.points < bestBranch.points) continue;
+                }
             }
             k++;
         }
-        for (int i = 0; i < branches.size(); i++)
-        {
-            System.out.println("Branch " + i + ": " + branches.get(i).checkmates + " checkmates and " + branches.get(i).points + " points.");
-        }
-        Coordinates lol = new Coordinates(1 , 2);
-        return lol;
+        Coordinates bestSource = sources.get(bestK);
+        Coordinates bestDest = moves.get(bestI).get(bestJ);
+        ArrayList<Coordinates> returns = new ArrayList<>();
+        returns.add(bestSource);
+        returns.add(bestDest);
+        return returns;
     }
 
     public branchData branchRecurse(Board board, int curDepth, Coordinates source, Coordinates dest)

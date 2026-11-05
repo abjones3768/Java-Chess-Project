@@ -12,8 +12,9 @@ public class backendTest {
 
     public void main()
     {
-        Engine engine = new Engine(5);
-        engine.getMove(board);
+        Engine engine = new Engine(6);
+        ArrayList<Coordinates> engineMove = engine.getMove(board);
+        System.out.println("Best engine move: " + engineMove.get(0).x + ", " + engineMove.get(0).y + " to " + engineMove.get(1).x + ", " + engineMove.get(1).y);
         //while(true) // Game loop
         if (false) //kill game for engine test
         {

@@ -5,6 +5,7 @@
   <artifactId>chess-game</artifactId>
   <version>1.0-SNAPSHOT</version>
   <build>
+    <finalName>chessGame</finalName>
     <plugins>
       <plugin>
         <groupId>org.openjfx</groupId>

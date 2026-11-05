@@ -26,6 +26,7 @@
 </dependencies>
 
 <build>
+    <finalName>chessGame</finalName>
     <plugins>
         <plugin>
             <groupId>org.openjfx</groupId>

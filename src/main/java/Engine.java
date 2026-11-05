@@ -72,6 +72,7 @@ public class Engine
                 System.out.println("Checking branch " + x);
                 x++;
                 branches.add(branchRecurse(board, this.depth, sources.get(k), moves.get(i).get(j)));
+                System.out.println("From: " + sources.get(k).x + ", " + sources.get(k).y + " to: " + moves.get(i).get(j).x + ", " + moves.get(i).get(j).y);
             }
             k++;
         }
@@ -90,36 +91,36 @@ public class Engine
         switch (nextBoard.getPiece(dest))
         {
             case 'P':
-                if (nextBoard.turnChar == 'W') branch.points += 1;
+                if (nextBoard.getColor(dest) == 'B') branch.points += 1;
                 else branch.points -= 1;
                 break;
             case 'N':
-                if (nextBoard.turnChar == 'W') branch.points += 3;
+                if (nextBoard.getColor(dest) == 'B') branch.points += 3;
                 else branch.points -= 3;
                 break;
             case 'R':
-                if (nextBoard.turnChar == 'W') branch.points += 5;
+                if (nextBoard.getColor(dest) == 'B') branch.points += 5;
                 else branch.points -= 5;
                 break;
             case 'B':
-                if (nextBoard.turnChar == 'W') branch.points += 3;
+                if (nextBoard.getColor(dest) == 'B') branch.points += 3;
                 else branch.points -= 3;
                 break;
             case 'Q':
-                if (nextBoard.turnChar == 'W') branch.points += 9;
+                if (nextBoard.getColor(dest) == 'B') branch.points += 9;
                 else branch.points -= 9;
                 break;
             default:
                 break;
         }
         nextBoard.movePiece(source, dest);
-        if (nextBoard.getColor(dest) == 'W') nextBoard.turnChar = 'B';
+        if (nextBoard.turnChar == 'W') nextBoard.turnChar = 'B';
         else nextBoard.turnChar = 'W';
         if (!nextBoard.moveExists('W') || !nextBoard.moveExists('B')) 
         {
             branchData newBranch = new branchData();
             newBranch.points += branch.points;
-            if (board.turnChar == 'W') newBranch.checkmates = 1;
+            if (nextBoard.turnChar == 'W') newBranch.checkmates = 1;
             else newBranch.checkmates = -1;
             return newBranch;
         }
@@ -171,7 +172,6 @@ public class Engine
                     moves.add(check);
                 }
             }
-            int x = 0;
             for (int i = 0; i < moves.size(); i++)
             {
                 for (int j = 0; j < moves.get(i).size(); j++)

@@ -12,7 +12,7 @@ public class backendTest {
 
     public void main()
     {
-        Engine engine = new Engine(4);
+        Engine engine = new Engine(5);
         engine.getMove(board);
         //while(true) // Game loop
         if (false) //kill game for engine test

@@ -1,11 +1,11 @@
-import java.io.File;
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 
 public class chess extends Application
@@ -19,7 +19,11 @@ public void start(Stage stage)
     StackPane pane = new StackPane(); // Create a StackPane to hold the board image and pieces
     pane.getChildren().add(imageView); // Add the board image to the StackPane
     Pane pieceLayer = new Pane(); // Create a Pane to hold the pieces on top of the board
-    pieceLayer.setPrefSize(boardImage.getWidth(), boardImage.getHeight()); // Set the size of the piece layer to match the board image
+
+    pieceLayer.setPrefSize(boardImage.getWidth(), boardImage.getHeight()); // Set the preferred size of the piece layer to match the board image size
+    pieceLayer.setMinSize(boardImage.getWidth(), boardImage.getHeight()); // Set the minimum size of the piece layer to match the board image size
+    pieceLayer.setMaxSize(boardImage.getWidth(), boardImage.getHeight()); // Set the maximum size of the piece layer to match the board image size
+
     pane.getChildren().add(pieceLayer); // Add the piece layer to the StackPane
     Scene scene = new Scene(pane, boardImage.getWidth(), boardImage.getHeight());  // Set the scene size to match the board image size
 
@@ -39,6 +43,27 @@ public void start(Stage stage)
 
     pieceLayer.getChildren().add(pawnImageView); // Add the pawn image to the piece layer
 
+    pawnImageView.setOnMousePressed(event -> {
+        System.out.println("pawn pressed");
+    });
+
+  pawnImageView.setOnMouseDragged(event -> {
+
+    // Convert mouse position into pieceLayer coordinates
+    Point2D mouse = pieceLayer.sceneToLocal(
+        event.getSceneX(),
+        event.getSceneY()
+    );
+
+    // Center the pawn on the mouse
+    double dragX = mouse.getX() - pawnImageView.getBoundsInLocal().getWidth() / 2;
+    double dragY = mouse.getY() - pawnImageView.getBoundsInLocal().getHeight() / 2;
+
+    pawnImageView.setLayoutX(dragX);
+    pawnImageView.setLayoutY(dragY);
+});
+    pawnImageView.setPickOnBounds(true);
+
     pawnImageView.setFitWidth(squareSize);
     pawnImageView.setFitHeight(squareSize);
     pawnImageView.setPreserveRatio(true);
@@ -56,6 +81,7 @@ public void start(Stage stage)
 
 
 
+// old java swing code using for reference
 /*         //System.out.println(board.boardData[0][0]);
         //System.out.println(board.boardData[3][3]);
         //int coord1[] = {0, 0};

@@ -47,21 +47,21 @@ public void start(Stage stage)
         System.out.println("pawn pressed");
     });
 
-  pawnImageView.setOnMouseDragged(event -> {
+    pawnImageView.setOnMouseDragged(event -> {
+        // Convert mouse position into pieceLayer coordinates
+        Point2D mouse = pieceLayer.sceneToLocal(
+            event.getSceneX(),
+            event.getSceneY()
+        );
 
-    // Convert mouse position into pieceLayer coordinates
-    Point2D mouse = pieceLayer.sceneToLocal(
-        event.getSceneX(),
-        event.getSceneY()
-    );
+        // Center the pawn on the mouse
+        double dragX = mouse.getX() - pawnImageView.getBoundsInLocal().getWidth() / 2;
+        double dragY = mouse.getY() - pawnImageView.getBoundsInLocal().getHeight() / 2;
 
-    // Center the pawn on the mouse
-    double dragX = mouse.getX() - pawnImageView.getBoundsInLocal().getWidth() / 2;
-    double dragY = mouse.getY() - pawnImageView.getBoundsInLocal().getHeight() / 2;
+        pawnImageView.setLayoutX(dragX);
+        pawnImageView.setLayoutY(dragY);
+    });
 
-    pawnImageView.setLayoutX(dragX);
-    pawnImageView.setLayoutY(dragY);
-});
     pawnImageView.setPickOnBounds(true);
 
     pawnImageView.setFitWidth(squareSize);

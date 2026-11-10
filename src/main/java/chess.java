@@ -10,6 +10,137 @@ import javafx.stage.Stage;
 
 public class chess extends Application
 {
+    // private ImageView[][] boardPieces = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
+    //                                 {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+    //                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
+    //                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
+    //                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
+    //                                 {'.', '.', '.', '.', '.', '.', '.', '.'},
+    //                                 {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+    //                                 {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+    /*
+    Create an 8x8 array of ImageViews, corresponding to the default board layout.
+    To populate the board, double for loop through the array and do the 
+    x = col * squareSize math stuff to populate them in the correct positions.
+    When any given ImageView is clicked, take the coordinates of the clicked piece and do:
+
+    while (true) // All of this should be in a loop that only ends when a full move is made
+        Coordinates source = new Coordinates(); (add coordinates to this struct, where coordinates are
+        0 indexed and the origin is in the top left of the array (i think))
+
+        if (board.getColor(source) != board.turnChar) continue; // This validates the piece color
+
+        ArrayList<Coordinates> check = new ArrayList<>(); // List of coordinates
+
+        switch (board.getPiece(source))
+        {
+            // Each piece has getValidMoves, which returns a list
+            // of coordinates, where the coordinates are all valid moves
+            case 'P':
+                check = board.pawnData.getValidMoves(source, board);
+                break;
+            case 'N':
+                check = board.knightData.getValidMoves(source, board);
+                break;
+            case 'R':
+                check = board.rookData.getValidMoves(source, board);
+                break;
+            case 'B':
+                check = board.bishopData.getValidMoves(source, board);
+                break;
+            case 'Q':
+                check = board.queenData.getValidMoves(source, board);
+                break;
+            case 'K':
+                check = board.kingData.getValidMoves(source, board);
+                break;
+            default:
+                System.exit(64);
+        }
+
+        // Redo loop if piece has no valid moves (such as a rook in the starting position)
+        if (check.isEmpty()) continue;
+
+        // Iterate through all moves in check, remove them from check if the position would result in a check
+        for (int i = 0; i < check.size(); i++)
+        {
+            Coordinates dest = check.get(i);
+            if (!board.considerCheck(source, dest))
+            {
+                check.remove(dest);
+                i--;
+            }
+        }
+
+        // At this point, the chosen piece has valid moves and is attached to the mouse. No permanent
+        // board state change should have occured, the chosen piece is simply primed to move.
+
+        Coordinates dest = new Coordinates(); // Populate this struct with a target location (either from a
+        second click while the piece is attached to the mouse or the square the mouse released on, either or)
+
+        // Redo loop if the chosen target square has the same color piece as the current player
+        if (board.getColor(dest) == board.turnChar) continue;
+
+        // This double checks to make sure dest is in check
+        switch (board.getPiece(source))
+        {
+            case 'P':
+                if (!board.pawnData.validMove(check, dest))         
+                {
+                    continue;
+                }
+                break;
+            case 'N':
+                if (!board.knightData.validMove(check, dest))
+                {
+                    continue;
+                }
+                else break;
+            case 'R':
+                if (!board.rookData.validMove(check, dest))
+                {
+                    continue;
+                }
+                else break;
+            case 'B':
+                if (!board.bishopData.validMove(check, dest))
+                {
+                    continue;
+                }
+                else break;
+            case 'Q':
+                if (!board.queenData.validMove(check, dest))
+                {
+                    continue;
+                }
+                else break;
+            case 'K':
+                if (!board.kingData.validMove(check, dest))
+                {
+                    continue;
+                }
+                else break;
+            default:
+                System.exit(64);
+        }
+
+        // At this point, a move has been fully validated and is legal.
+        // Along with board.movePiece(), the ImageView array also needs to be manually changed.
+        // After some validation, movePiece() just copies the source piece and color to the
+        // destination square and erases the original, the same process can be done in the ImageView array
+        board.movePiece(source, dest);
+
+        // Pawn promotion is done here as well. This needs some GUI feature for selection but
+        // the backend logic is unchanged
+        if (board.getPiece(dest) == 'P' && (dest.y == 0 || dest.y == 7))
+        {
+            char choice = 'X';
+            // prompt for piece selection here somehow, change choice to piece character
+            board.promotePawn(dest, choice);
+        }
+
+        // End loop
+     */
 @Override
 public void start(Stage stage)
 {

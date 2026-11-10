@@ -115,7 +115,7 @@ public class backendTest {
                 // Validate piece was not current turn color (would result in capturing own piece)
                 if (board.getColor(dest) == board.turnChar) continue;
 
-                 // Validate move destination
+                // Validate move destination
                 switch (board.getPiece(source))
                 {
                     case 'P':

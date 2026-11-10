@@ -24,6 +24,8 @@ public class chess extends Application
     x = col * squareSize math stuff to populate them in the correct positions.
     When any given ImageView is clicked, take the coordinates of the clicked piece and do:
 
+    // All places where continue; is done simply redoes the loop, but this might need to be slightly
+    // redone to accomodate click functionality
     while (true) // All of this should be in a loop that only ends when a full move is made
         Coordinates source = new Coordinates(); (add coordinates to this struct, where coordinates are
         0 indexed and the origin is in the top left of the array (i think))

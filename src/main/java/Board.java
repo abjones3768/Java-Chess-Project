@@ -1,4 +1,4 @@
-package src.main.java;
+
 import java.util.ArrayList;
 
 public class Board {
@@ -11,7 +11,7 @@ public class Board {
     public King kingData = new King();
 
     // Game state data (public visibility for convenience)
-    public char turnChar = 'B';
+    public char turnChar = 'W';
     public boolean whiteKingMoved = false;
     public boolean blackKingMoved = false;
     public boolean leftWhiteRookMoved = false;
@@ -196,7 +196,6 @@ public class Board {
                                 check = queenData.getValidMoves(locCheck, this);
                                 break;
                             case 'K':
-                                kingData.recurse = false;
                                 check = kingData.getValidMoves(locCheck, this);
                                 break;
                             default:
@@ -249,7 +248,6 @@ public class Board {
                                 check = queenData.getValidMoves(locCheck, this);
                                 break;
                             case 'K':
-                                kingData.recurse = false;
                                 check = kingData.getValidMoves(locCheck, this);
                                 break;
                             default:

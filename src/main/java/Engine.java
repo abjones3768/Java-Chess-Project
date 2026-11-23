@@ -1,6 +1,3 @@
-package src.main.java;
-import src.main.java.Coordinates;
-import src.main.java.Board;
 
 import java.util.ArrayList;
 

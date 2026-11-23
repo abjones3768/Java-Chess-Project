@@ -1,4 +1,4 @@
-package src.main.java;
+
 import java.util.ArrayList;
 
 public class King extends Piece
@@ -8,6 +8,31 @@ public class King extends Piece
     {
         pieceChar = 'K';
     }
+    public ArrayList<Coordinates> getAttackingMoves(
+    final Coordinates loc, final Board boardState)
+{
+    ArrayList<Coordinates> coords = new ArrayList<>();
+
+    for (int x = -1; x <= 1; x++)
+    {
+        for (int y = -1; y <= 1; y++)
+        {
+            if (x == 0 && y == 0)
+                continue;
+
+            Coordinates dest = new Coordinates(
+                loc.x + x, loc.y + y
+            );
+
+            if (boardState.inBounds(dest))
+            {
+                coords.add(dest);
+            }
+        }
+    }
+
+    return coords;
+}
     public ArrayList<Coordinates> getValidMoves(final Coordinates loc, final Board boardState)
     {
         /* Movement pattern:
@@ -186,11 +211,7 @@ public class King extends Piece
                             check = boardState.queenData.getValidMoves(locCheck, boardState);
                             break;
                         case 'K':
-                            if (recurse)
-                            {
-                                recurse = false;
-                                check = boardState.kingData.getValidMoves(locCheck, boardState);
-                            }
+                            check = boardState.kingData.getAttackingMoves(locCheck, boardState);
                             break;
                         default:
                             break;

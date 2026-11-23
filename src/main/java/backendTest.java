@@ -1,9 +1,6 @@
-import src.main.java.Board;
-import src.main.java.Coordinates;
-import src.main.java.Engine;
 
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class backendTest {
     Scanner input = new Scanner(System.in);

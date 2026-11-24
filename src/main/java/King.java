@@ -211,7 +211,11 @@ public class King extends Piece
                             check = boardState.queenData.getValidMoves(locCheck, boardState);
                             break;
                         case 'K':
-                            check = boardState.kingData.getAttackingMoves(locCheck, boardState);
+                            if (recurse)
+                            {
+                                recurse = false;
+                                check = boardState.kingData.getAttackingMoves(locCheck, boardState);
+                            }
                             break;
                         default:
                             break;

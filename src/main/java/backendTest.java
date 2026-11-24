@@ -9,6 +9,7 @@ public class backendTest {
 
     public void main()
     {
+        board.turnChar = 'B';
         while(true) // Game loop
         {
             // Display board

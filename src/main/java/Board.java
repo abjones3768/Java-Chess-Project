@@ -69,13 +69,15 @@ public class Board {
     public void movePiece(Coordinates source, Coordinates dest)
     {
         Coordinates passantcheck = new Coordinates(dest.x, dest.y + 1);
+        boolean passantDone = false;
         if (getPiece(source) == 'P' && getColor(source) == 'W' && getPiece(dest) == '.' && getPiece(passantcheck) == 'P' && enPassant[dest.x]) // White en passant check
         {
+            passantDone = true;
             boardPieces[passantcheck.y][passantcheck.x] = '.'; // Delete piece
             boardColors[passantcheck.y][passantcheck.x] = '.'; // Delete color
         }
         passantcheck.y -= 2;
-        if (getPiece(source) == 'P' && getColor(source) == 'B' && getPiece(dest) == '.' && getPiece(passantcheck) == 'P' && enPassant[dest.x]) // Black en passant check
+        if (passantDone && (getPiece(source) == 'P' && getColor(source) == 'B' && getPiece(dest) == '.' && getPiece(passantcheck) == 'P' && enPassant[dest.x])) // Black en passant check
         {
             boardPieces[passantcheck.y][passantcheck.x] = '.'; // Delete piece
             boardColors[passantcheck.y][passantcheck.x] = '.'; // Delete color

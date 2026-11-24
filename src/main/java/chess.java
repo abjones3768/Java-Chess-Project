@@ -26,6 +26,8 @@ public class chess extends Application
     private Label turnLabel =  new Label("White's Turn");
     private Pane highlightLayer = new Pane();
     private Pane checkLayer = new Pane();
+    private Scene menuScene;
+    private Scene gameScene;
 
 
     private Piece getPieceData(Coordinates position)
@@ -240,7 +242,98 @@ private void updateTurnLabel()
     }
 }
 
-private void checkGameStatus()
+// Resets the game to its starting state
+private void restartGame(double squareSize, Pane pieceLayer)
+{
+    board = new Board();
+
+    gameOver = false;
+
+    highlightLayer.getChildren().clear();
+    checkLayer.getChildren().clear();
+
+    refreshBoard(squareSize, pieceLayer);
+
+    updateTurnLabel();
+
+    highlightKingInCheck(squareSize);
+
+    checkGameStatus(squareSize, pieceLayer);
+}
+
+// Displays the result when the game ends
+private void showGameOverPopup(boolean inCheck,
+                              double squareSize,
+                              Pane pieceLayer)
+{
+    Stage popup = new Stage();
+
+    popup.setTitle("Game Over");
+    popup.initModality(Modality.APPLICATION_MODAL);
+    popup.setResizable(false);
+
+    Label title = new Label();
+    Label result = new Label();
+
+    // Determine whether the game ended in checkmate or stalemate
+    if (inCheck)
+    {
+        title.setText("Checkmate!");
+
+        if (board.turnChar == 'W')
+            result.setText("Black Wins!");
+        else
+            result.setText("White Wins!");
+    }
+    else
+    {
+        title.setText("Stalemate!");
+        result.setText("It's a Draw!");
+    }
+
+    title.setStyle(
+        "-fx-font-size: 28px;" +
+        "-fx-font-weight: bold;"
+    );
+
+    result.setStyle("-fx-font-size: 20px;");
+
+    Label message = new Label(
+        "Would you like to play again?"
+    );
+
+    Button restart = new Button("Play Again");
+    Button close = new Button("Close");
+
+    restart.setOnAction(event -> {
+        restartGame(squareSize, pieceLayer);
+        popup.close();
+    });
+
+    close.setOnAction(event -> {
+        popup.close();
+    });
+
+    HBox buttons = new HBox(15, restart, close);
+    buttons.setAlignment(Pos.CENTER);
+
+    VBox layout = new VBox(
+        15, title, result, message, buttons
+    );
+
+    layout.setAlignment(Pos.CENTER);
+    layout.setPadding(new Insets(25));
+
+    Scene scene = new Scene(layout, 350, 220);
+
+    popup.setScene(scene);
+    popup.showAndWait();
+}
+
+
+// Determines whether the game has ended
+private void checkGameStatus(double squareSize,
+                             Pane pieceLayer)
 {
     boolean inCheck = board.isCheck(board.turnChar);
     boolean hasMoves = board.moveExists(board.turnChar);
@@ -252,20 +345,20 @@ private void checkGameStatus()
         if (inCheck)
         {
             if (board.turnChar == 'W')
-                System.out.println("Checkmate! Black wins!");
+                turnLabel.setText("Checkmate! Black Wins!");
             else
-                System.out.println("Checkmate! White wins!");
+                turnLabel.setText("Checkmate! White Wins!");
         }
         else
         {
-            System.out.println("Stalemate! It's a draw!");
+            turnLabel.setText("Stalemate! Draw!");
         }
-    }
-    else if (inCheck)
-    {
-        System.out.println("Check!");
+
+        showGameOverPopup(inCheck, squareSize, pieceLayer);
     }
 }
+
+
 private void highlightKingInCheck(double squareSize)
 {
     checkLayer.getChildren().clear();
@@ -440,7 +533,7 @@ private void enableMovement(ImageView pieceView, Coordinates position,
 
                 highlightKingInCheck(squareSize);
 
-                checkGameStatus();
+                checkGameStatus(squareSize, pieceLayer);
 
                 System.out.println("Valid movement!");
 
@@ -458,6 +551,42 @@ private void enableMovement(ImageView pieceView, Coordinates position,
         pieceView.setLayoutX(position.x * squareSize);
         pieceView.setLayoutY(position.y * squareSize);
     });
+}
+
+private Scene createMainMenu(Stage stage)
+{
+    Label Title = new Label("Chess!");
+
+    Title.setStyle(
+        "-fx-font-size: 60px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-text-fill: white;"
+    );
+
+    Button playButton = new Button("Play Game");
+    Button exitButton = new Button("Exit Game");
+
+    playButton.setPrefWidth(200);
+    exitButton.setPrefWidth(200);
+
+    playButton.setOnAction(event -> {
+        stage.setScene(gameScene);
+        stage.sizeToScene();
+        stage.centerOnScreen();
+    });
+
+    exitButton.setOnAction(event -> {
+        stage.close();
+    });
+
+    VBox menuLayout = new VBox(
+        20, Title, playButton, exitButton
+    );
+
+    menuLayout.setAlignment(Pos.CENTER);
+    menuLayout.setStyle("-fx-background-color: #242424;");
+
+    return new Scene(menuLayout, 800, 800);
 }
     
 @Override
@@ -488,23 +617,42 @@ public void start(Stage stage)
     );
 
     turnLabel.setTextFill(Color.WHITE);
+    
+    // Restart game button
+    Button restartButton = new Button("Restart Game");
 
-    // Place the label above the chessboard
-    VBox root = new VBox(10, turnLabel, pane);
+    restartButton.setStyle(
+        "-fx-background-color: #444444;" +
+        "-fx-text-fill: white;" +
+        "-fx-font-size: 14px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-cursor: hand;" +
+        "-fx-padding: 10px 20px;"
+    );
+
+    restartButton.setOnAction(event -> {
+        restartGame(boardImage.getWidth() / 8, pieceLayer);
+    });
+
+    VBox root = new VBox(10, turnLabel, pane, restartButton);
+
+    
     root.setAlignment(Pos.CENTER);
     root.setStyle("-fx-background-color: #242424;");
     root.setPadding(new Insets(10));
 
-    Scene scene = new Scene(root);
+    gameScene = new Scene(root);
 
     double squareSize = boardImage.getWidth() / 8;
 
     // Automatically create all chess pieces
     populateBoard(squareSize, pieceLayer);
 
-    stage.setScene(scene); // Set the scene on the stage
-    stage.setTitle("Chess Game"); // Set the title of the window
-    stage.show(); // Show the stage
+    menuScene = createMainMenu(stage);
+
+    stage.setScene(menuScene);
+    stage.setTitle("Chess Game");
+    stage.show();
 }
     //Board board = new Board();
     public static void main(String[] args)

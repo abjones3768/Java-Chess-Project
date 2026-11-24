@@ -198,7 +198,11 @@ public class Board {
                                 check = queenData.getValidMoves(locCheck, this);
                                 break;
                             case 'K':
-                                check = kingData.getValidMoves(locCheck, this);
+                                if (kingData.recurse)
+                                {
+                                    check = kingData.getValidMoves(locCheck, this);
+                                    kingData.recurse = false;
+                                }
                                 break;
                             default:
                                 break;

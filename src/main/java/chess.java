@@ -21,6 +21,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class chess extends Application
 {
@@ -976,6 +978,20 @@ public void start(Stage stage)
     populateBoard(squareSize, pieceLayer);
 
     menuScene = createMainMenu(stage);
+
+    gameScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        if (event.getCode() == KeyCode.F11) {
+            stage.setFullScreen(!stage.isFullScreen());
+            event.consume();
+        }
+    });
+
+    menuScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        if (event.getCode() == KeyCode.F11) {
+            stage.setFullScreen(!stage.isFullScreen());
+            event.consume();
+        }
+    });
 
     stage.setScene(menuScene);
     stage.setTitle("Chess Game");

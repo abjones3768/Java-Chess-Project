@@ -36,7 +36,7 @@ public class chess extends Application
     private int moveNumber = 1;
 
 
-    private Piece getPieceData(Coordinates position)
+private Piece getPieceData(Coordinates position)
 {
     switch (board.getPiece(position))
     {
@@ -803,22 +803,75 @@ private String createMoveNotation(Coordinates source,
     return notation;
 }
 
+// Creates the main menu screen
 private Scene createMainMenu(Stage stage)
 {
-    Label Title = new Label("Chess!");
+    // Load chess piece images
+    ImageView whiteKing = new ImageView(
+        new Image(getClass().getResourceAsStream("/White_King.png"))
+    );
 
-    Title.setStyle(
+    ImageView blackKing = new ImageView(
+        new Image(getClass().getResourceAsStream("/Black_King.png"))
+    );
+
+    whiteKing.setFitWidth(100);
+    whiteKing.setFitHeight(100);
+    whiteKing.setPreserveRatio(true);
+
+    blackKing.setFitWidth(100);
+    blackKing.setFitHeight(100);
+    blackKing.setPreserveRatio(true);
+
+    // Display the kings beside each other
+    HBox logo = new HBox(15, whiteKing, blackKing);
+    logo.setAlignment(Pos.CENTER);
+
+    // Main title
+    Label title = new Label("C H E S S");
+
+    title.setStyle(
         "-fx-font-size: 60px;" +
         "-fx-font-weight: bold;" +
         "-fx-text-fill: white;"
     );
 
+    // Subtitle
+    Label subtitle = new Label("Local Two-Player Chess");
+
+    subtitle.setStyle(
+        "-fx-font-size: 18px;" +
+        "-fx-text-fill: #aaaaaa;"
+    );
+
+    // Create menu buttons
     Button playButton = new Button("Play Game");
     Button exitButton = new Button("Exit Game");
 
-    playButton.setPrefWidth(200);
-    exitButton.setPrefWidth(200);
+    playButton.setPrefSize(240, 50);
+    exitButton.setPrefSize(240, 50);
 
+    // Style the play button
+    playButton.setStyle(
+        "-fx-background-color: #eeeeee;" +
+        "-fx-text-fill: #242424;" +
+        "-fx-font-size: 18px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-background-radius: 8px;" +
+        "-fx-cursor: hand;"
+    );
+
+    // Style the exit button
+    exitButton.setStyle(
+        "-fx-background-color: #444444;" +
+        "-fx-text-fill: white;" +
+        "-fx-font-size: 18px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-background-radius: 8px;" +
+        "-fx-cursor: hand;"
+    );
+
+    // Button functionality
     playButton.setOnAction(event -> {
         stage.setScene(gameScene);
         stage.sizeToScene();
@@ -829,11 +882,21 @@ private Scene createMainMenu(Stage stage)
         stage.close();
     });
 
+    // Organize the title and subtitle
+    VBox titleLayout = new VBox(5, title, subtitle);
+    titleLayout.setAlignment(Pos.CENTER);
+
+    // Organize the buttons
+    VBox buttons = new VBox(15, playButton, exitButton);
+    buttons.setAlignment(Pos.CENTER);
+
+    // Main menu layout
     VBox menuLayout = new VBox(
-        20, Title, playButton, exitButton
+        30, logo, titleLayout, buttons
     );
 
     menuLayout.setAlignment(Pos.CENTER);
+    menuLayout.setPadding(new Insets(30));
     menuLayout.setStyle("-fx-background-color: #242424;");
 
     return new Scene(menuLayout, 800, 800);

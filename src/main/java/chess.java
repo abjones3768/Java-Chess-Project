@@ -7,8 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -28,6 +31,9 @@ public class chess extends Application
     private Pane checkLayer = new Pane();
     private Scene menuScene;
     private Scene gameScene;
+    private GridPane moveHistory = new GridPane();
+    private ScrollPane historyScroll = new ScrollPane();
+    private int moveNumber = 1;
 
 
     private Piece getPieceData(Coordinates position)
@@ -252,13 +258,10 @@ private void restartGame(double squareSize, Pane pieceLayer)
     highlightLayer.getChildren().clear();
     checkLayer.getChildren().clear();
 
+    resetMoveHistory();
+
     refreshBoard(squareSize, pieceLayer);
-
     updateTurnLabel();
-
-    highlightKingInCheck(squareSize);
-
-    checkGameStatus(squareSize, pieceLayer);
 }
 
 // Displays the result when the game ends
@@ -505,7 +508,14 @@ private void enableMovement(ImageView pieceView, Coordinates position,
 
             if (piece.validMove(validMoves, dest) && board.considerCheck(position, dest)) 
             {
+                char movingColor = board.getColor(position);
+                char movingPiece = board.getPiece(position);
+
+                String notation = createMoveNotation(position, dest);
+
+                // move pieces
                 board.movePiece(position, dest);
+
                 // Check for pawn promotion
                 if (board.getPiece(dest) == 'P')
                 {
@@ -514,6 +524,12 @@ private void enableMovement(ImageView pieceView, Coordinates position,
                     if ((color == 'W' && dest.y == 0) || (color == 'B' && dest.y == 7))
                     {
                         showPromotionPopup(dest);
+                    }
+                    // Add promotion notation
+                    if (movingPiece == 'P' &&
+                        board.getPiece(dest) != 'P')
+                    {
+                        notation += "=" + board.getPiece(dest);
                     }
                 }
 
@@ -526,6 +542,21 @@ private void enableMovement(ImageView pieceView, Coordinates position,
                 {
                     board.turnChar = 'W';
                 }
+
+                // Add check or checkmate notation
+                if (board.isCheck(board.turnChar))
+                {
+                    if (!board.moveExists(board.turnChar))
+                    {
+                        notation += "#";
+                    }
+                    else
+                    {
+                        notation += "+";
+                    }
+                }
+
+recordMove(notation, movingColor);
 
                 refreshBoard(squareSize, pieceLayer);
 
@@ -551,6 +582,225 @@ private void enableMovement(ImageView pieceView, Coordinates position,
         pieceView.setLayoutX(position.x * squareSize);
         pieceView.setLayoutY(position.y * squareSize);
     });
+}
+
+// Creates a styled chessboard coordinate label
+private Label createCoordinateLabel(String text,
+                                    double width,
+                                    double height)
+{
+    Label label = new Label(text);
+
+    label.setMinSize(width, height);
+    label.setPrefSize(width, height);
+    label.setMaxSize(width, height);
+
+    label.setAlignment(Pos.CENTER);
+
+    label.setStyle(
+        "-fx-font-size: 16px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-text-fill: white;"
+    );
+
+    return label;
+}
+
+// Surrounds the chessboard with letters and numbers
+private GridPane createBoardCoordinates(StackPane pane,
+                                        double squareSize)
+{
+    GridPane boardGrid = new GridPane();
+
+    boardGrid.setAlignment(Pos.CENTER);
+
+    double borderSize = 25;
+
+    // Add the chessboard to the center
+    boardGrid.add(pane, 1, 1, 8, 8);
+
+    for (int i = 0; i < 8; i++)
+    {
+        String letter = String.valueOf((char) ('a' + i));
+        String number = String.valueOf(8 - i);
+
+        // Top letters
+        boardGrid.add(
+            createCoordinateLabel(letter, squareSize, borderSize),
+            i + 1, 0
+        );
+
+        // Bottom letters
+        boardGrid.add(
+            createCoordinateLabel(letter, squareSize, borderSize),
+            i + 1, 9
+        );
+
+        // Left numbers
+        boardGrid.add(
+            createCoordinateLabel(number, borderSize, squareSize),
+            0, i + 1
+        );
+
+        // Right numbers
+        boardGrid.add(
+            createCoordinateLabel(number, borderSize, squareSize),
+            9, i + 1
+        );
+    }
+
+    return boardGrid;
+}
+
+// Converts board coordinates into chess notation
+private String getSquareName(Coordinates position)
+{
+    char file = (char) ('a' + position.x);
+    int rank = 8 - position.y;
+
+    return "" + file + rank;
+}
+
+// Creates the move history panel
+private VBox createMoveHistoryPanel()
+{
+    Label title = new Label("Move History");
+
+    title.setStyle(
+        "-fx-font-size: 20px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-text-fill: white;"
+    );
+
+    moveHistory.setHgap(10);
+    moveHistory.setVgap(8);
+    moveHistory.setPadding(new Insets(10));
+
+    moveHistory.getColumnConstraints().addAll(
+        new ColumnConstraints(35),
+        new ColumnConstraints(90),
+        new ColumnConstraints(90)
+    );
+
+    resetMoveHistory();
+
+    historyScroll.setContent(moveHistory);
+    historyScroll.setFitToWidth(true);
+    historyScroll.setPrefHeight(600);
+
+    historyScroll.setHbarPolicy(
+        ScrollPane.ScrollBarPolicy.NEVER
+    );
+
+    VBox panel = new VBox(10, title, historyScroll);
+
+    panel.setAlignment(Pos.TOP_CENTER);
+    panel.setPadding(new Insets(10));
+    panel.setPrefWidth(270);
+
+    panel.setStyle(
+        "-fx-background-color: #353535;" +
+        "-fx-background-radius: 8px;"
+    );
+
+    return panel;
+}
+
+// Clears the move history and restores its headings
+private void resetMoveHistory()
+{
+    moveHistory.getChildren().clear();
+
+    moveNumber = 1;
+
+    Label number = new Label("#");
+    Label white = new Label("White");
+    Label black = new Label("Black");
+
+    number.setStyle("-fx-font-weight: bold;");
+    white.setStyle("-fx-font-weight: bold;");
+    black.setStyle("-fx-font-weight: bold;");
+
+    moveHistory.add(number, 0, 0);
+    moveHistory.add(white, 1, 0);
+    moveHistory.add(black, 2, 0);
+}
+
+// Adds a completed move to the history
+private void recordMove(String notation, char color)
+{
+    Label move = new Label(notation);
+
+    move.setStyle("-fx-font-size: 15px;");
+
+    if (color == 'W')
+    {
+        moveHistory.add(
+            new Label(moveNumber + "."),
+            0, moveNumber
+        );
+
+        moveHistory.add(move, 1, moveNumber);
+    }
+    else
+    {
+        moveHistory.add(move, 2, moveNumber);
+
+        moveNumber++;
+    }
+
+    // Automatically scroll to the newest move
+    javafx.application.Platform.runLater(() -> {
+        historyScroll.setVvalue(1.0);
+    });
+}
+
+// Generates notation before the piece is moved
+private String createMoveNotation(Coordinates source,
+                                  Coordinates dest)
+{
+    char piece = board.getPiece(source);
+
+    boolean capture = board.getPiece(dest) != '.';
+
+    String notation = "";
+
+    // Castling
+    if (piece == 'K' &&
+        Math.abs(dest.x - source.x) == 2)
+    {
+        if (dest.x > source.x)
+            return "O-O";
+        else
+            return "O-O-O";
+    }
+
+    // En passant
+    if (piece == 'P' && source.x != dest.x)
+    {
+        capture = true;
+    }
+
+    // Add the piece letter, except for pawns
+    if (piece != 'P')
+    {
+        notation += piece;
+    }
+    else if (capture)
+    {
+        notation += (char) ('a' + source.x);
+    }
+
+    // Add capture symbol
+    if (capture)
+    {
+        notation += "x";
+    }
+
+    // Add destination square
+    notation += getSquareName(dest);
+
+    return notation;
 }
 
 private Scene createMainMenu(Stage stage)
@@ -634,7 +884,21 @@ public void start(Stage stage)
         restartGame(boardImage.getWidth() / 8, pieceLayer);
     });
 
-    VBox root = new VBox(10, turnLabel, pane, restartButton);
+    GridPane boardGrid = createBoardCoordinates(
+    pane, boardImage.getWidth() / 8
+    );
+
+    VBox historyPanel = createMoveHistoryPanel();
+
+        HBox gameLayout = new HBox(
+        15, boardGrid, historyPanel
+    );
+
+    gameLayout.setAlignment(Pos.CENTER);
+
+    VBox root = new VBox(
+        10, turnLabel, gameLayout, restartButton
+    );
 
     
     root.setAlignment(Pos.CENTER);
